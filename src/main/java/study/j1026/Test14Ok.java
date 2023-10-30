@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/j1026/test10Ok")
-public class Test10Ok extends HttpServlet{
+@WebServlet("/j1026/test14Ok")
+public class Test14Ok extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
@@ -27,7 +28,7 @@ public class Test10Ok extends HttpServlet{
 		// 기본적으로 다시 체크해야할 것들을 체크해 준다. (잘못된 자료는 다시 돌려보낸다. 정상적인 자료는 DB에 저장시켜준다..)
 		if(name.equals("") || age < 20) {
 			// 정상처리 x (가입조건을 만족하지 않았기에 다시 가입창으로 전송시켜준다.)
-			response.sendRedirect(request.getContextPath()+"/study/1026/test10.jsp?flag=no");
+			response.sendRedirect(request.getContextPath()+"/study/1026/test14.jsp?flag=no");
 		}
 		else {
 			// 가입조건을 만족하였기에, DB에 저장시키고 회원 메인창(test10Res.jsp)으로 이동시킨다.
@@ -42,17 +43,30 @@ public class Test10Ok extends HttpServlet{
 			hobby = hobby.substring(0,hobby.length()-1);
 			System.out.println("hobby : " + hobby);   //이 부분을 DB에 넣는 것!
 			System.out.println("job : " + job);
-			PrintWriter out = response.getWriter();
 			
-//			response(레스판스) 객체에 의한 전송 : location.href와 비슷하다.
-//			한글인 경우는 인코딩문제로 브라우저에서 에러로 체크된다.
-			name  = URLEncoder.encode(name, "utf-8");   //name을 utf-8형식으로 바꿔주세요.. 라는 의미
-			gender = URLEncoder.encode(gender, "utf-8");
-			hobby = URLEncoder.encode(hobby, "utf-8");
-			job = URLEncoder.encode(job, "utf-8");
-			//정상처리 되었을 경우 (test10Res.jsp 파일로 가서 넘긴 값을 출력하도록 할 예정이다)
-//			response.sendRedirect(request.getContextPath()+"/study/1026/test10Res.jsp?flag="+name); 
-			response.sendRedirect(request.getContextPath()+"/study/1026/test10Res.jsp?name="+name+"&age="+age+"&gender="+gender+"&hobby="+gender+"&job="+job); 
+			// vo 생성
+			Test13VO vo = new Test13VO();
+			vo.setName(name);
+			vo.setAge(age);
+			vo.setGender(gender);
+			vo.setHobby(hobby);
+			vo.setJob(job);
+			//DB 저장완료 후 jsp로 이동처리한다.
+			
+			// request저장소에 전송하려고 하는 자료들을 모두 담아준다. : request("변수명",전송값)		// set은 저장
+			// 헤드?에 저장 된다? 그렇기 때문에 EL로 표기 가능?
+//			request.setAttribute("name", name);
+//			request.setAttribute("age", age);
+//			request.setAttribute("gender", gender);
+//			request.setAttribute("hobby", hobby);
+//			request.setAttribute("job", job);
+			request.setAttribute("vo", vo);  // 이렇게 객체로도 넣을 수 있다. (vo객체를 가지고 헤더에 실어서 갈 수 있다.)
+			
+			String viewPage = "/study/1026/test14Res.jsp";    // study 앞에 있는  /(슬레쉬)는 wabapp을 의미함.
+			
+			// RequestDispatcher는 변수명을 dispatcher로 적기로 약속(?)되어 있음.. (다른 거 적어도 되긴함.)
+			RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
+			dispatcher.forward(request, response);
 		}
 	}
 }
