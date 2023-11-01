@@ -19,13 +19,13 @@
     	}
     	else {
     		//myform.submit();
-    		location.href = "${ctp}/j1101/ex5NameOk?name="+name;
+    		location.href = "${ctp}/j1101/ex5Ok?name="+name;
     	}
     }
     
     function genderCheck() {
     	let gender = myform.gender.value;
-    	location.href = "${ctp}/j1101/ex5GenderOk?gender="+gender;
+    	location.href = "${ctp}/j1101/ex5Ok?gender="+gender;
     }
   </script>
 </head>
