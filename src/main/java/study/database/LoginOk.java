@@ -17,6 +17,7 @@ public class LoginOk extends HttpServlet{
 protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	String mid = request.getParameter("mid")== null ? "" : request.getParameter("mid");
 	String pwd = request.getParameter("pwd")== null ? "" : request.getParameter("pwd");
+	String idCheck = request.getParameter("idCheck")== null ? "No" : request.getParameter("idCheck");
 	 
 	// 데이터 베이스 연결 객체 새성
 	LoginDAO dao = new LoginDAO();
@@ -42,7 +43,26 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 		session.setAttribute("sTodayCount",vo.getTodayCount());
 	
 		// 2. 쿠키저장 (숙제)
-		Cookie cookie = new Cookie("cMid", mid);
+		if(idCheck.equals("save")) {
+			Cookie cookie = new Cookie("cMid", mid);
+			cookie.setMaxAge(60*60*24*7);
+			cookie.setPath("/");  //이걸 안 넣으면 servlet에서 jsp로 쿠키를 넘길 수 없음.
+			
+			response.addCookie(cookie);
+		}
+		else if(idCheck.equals("No")) {
+			Cookie[] cookies = request.getCookies();
+			if(cookies.length != 1) {
+				for(int i=0; i<cookies.length; i++) {
+					if(cookies[i].getName().equals("cMid")) {
+						cookies[i].setMaxAge(0);
+						cookies[i].setPath("/");
+						
+						response.addCookie(cookies[i]);
+					}
+				}
+			}
+		}
 		
 		// 3.DB작업
 		

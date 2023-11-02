@@ -114,4 +114,24 @@ public class LoginDAO {
 		}
 		return vos;
 	}
+
+	public LoginVO getLoginSearch(String sid) {
+		vo = new LoginVO();
+		try {
+			sql="select * from login where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setName(rs.getString("name"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(전체조회) : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
+	}
 }
