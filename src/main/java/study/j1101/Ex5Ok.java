@@ -71,33 +71,42 @@ public class Ex5Ok extends HttpServlet{
 		vo.setAddress("부산");
 		vos.add(vo);
 		
+		// 해결
 		PrintWriter out = response.getWriter();
 		if(!name.isEmpty()) {
+			ArrayList<Jstl4VO> vosN = new ArrayList<Jstl4VO>(); 
 			for(int i=0; i<vos.size(); i++) {
 				if(vos.get(i).getName().equals(name)) {
-					request.setAttribute("vos", vos.get(i));
-					System.out.println(vos.get(i));
-					/* out.print(vos.get(i)); */
+					vosN.add(vos.get(i));  //새로 생성한 ArrayList(voss)에 vos.get(i)(이게 vo임)를 담는다.  //같은 이름(vos)으로 ArrayList를 생성하면 위에 저장한 vos를 삭제해(덮어씌우기) 버리기 때문에 다른 이름으로 새로 생성한다.
+//					System.out.println(vos.get(i));
+//					out.print(vos.get(i)); 
 				}
-			}
+			}	
+			request.setAttribute("vos", vosN );
 		}
 		else if(!gender.isEmpty()) {
+			ArrayList<Jstl4VO> vosG = new ArrayList<Jstl4VO>(); 
 			for(int i=0; i<vos.size(); i++) {
 				if(vos.get(i).getGender().equals(gender)) {
-					/* out.print(vos.get(i)); */
-					request.setAttribute("vos", vos.get(i));
-					
+					vosG.add(vos.get(i));
+//					out.print(vos.get(i)); 
 				}
 			}
+			request.setAttribute("vos", vosG );
+		}
+		else {
+			
 		}
 		
 		/*
 		 * String viewPage = request.getContextPath()+"/study/1101_JSTL/jstl5Res.jsp";
 		 */
 		
-		/* String viewPage = "/study/1101_JSTL/jstl5Res.jsp"; */
+//		String viewPage = "/study/1101_JSTL/jstl5Res.jsp"; 
 		 
+//		request.setAttribute("vos", vos);
 		String viewPage = "/study/1101_JSTL/ex5_jstl5Res.jsp";
+//		String viewPage = "/study/1101_JSTL/ex.jsp";
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);

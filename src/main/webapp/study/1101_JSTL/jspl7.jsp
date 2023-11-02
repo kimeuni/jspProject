@@ -51,6 +51,21 @@
 		오늘 날짜3 : <fmt:formatDate value="${today}" pattern="yyyy-MM-dd"/> <br/>	
 		오늘 시간4 : <fmt:formatDate value="${today}" pattern="hh : mm : ss"/> <br/>	
 		오늘 시간5 : <fmt:formatDate value="${today}" pattern="yyyy년MM월dd일 hh시 mm분 ss초"/> <br/>	
+		<hr/>
+		
+		5. 국가별설정(로케일) <br/>
+		톰캣서버의 기본 로케일 : <%= response.getLocale() %><br/>
+		톰캣서버의 기본 로케일 : <fmt:setLocale value="en_US"/>   <!-- 바꾸는 이유는 사이트를 일본어로보겠다..? 영어로 보겠다..? 이런거 할 때 바꿔서 한다.(안그러면 글자가 깨질 수 있다고? 함? -->
+		<fmt:formatNumber value="${won1}" type="currency"/><br/>
+		<hr/>
+		
+		
+		6. URL이동 : location.href = ''; => redirect    : core라이브러리에 존재함<br/>
+		<%-- <c:redirect url="jstl6.jsp"/> --%>
+		<hr/>
+		
+		7. import : core라이브러리에 존재함<br/>
+		<c:import url="/include/bs4.jsp" />
 	</div>
 </div>
 <p><br/></p>

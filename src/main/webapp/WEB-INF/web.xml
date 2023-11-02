@@ -9,4 +9,50 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <!-- Controller역할(@ webServlet을 대행)(1102_web_xml) -->
+  <servlet>
+  	<servlet-name>jTest1Ok</servlet-name>  <!-- 서블릿 별명을 붙이기/중복되면 안 됨. -->
+  	<servlet-class>study.j1102.Test1Ok</servlet-class> <!-- 클래스 위치 등록 -->
+  </servlet>
+  <!-- 웹과 서블릿 연결 -->
+  <servlet-mapping>
+  	<servlet-name>jTest1Ok</servlet-name>
+  	<url-pattern>/j1102/test1Ok</url-pattern>
+  </servlet-mapping>
+  <!-- 컨트롤러 완성 -->
+  
+  <servlet>
+  	<servlet-name>jTest1Ok2</servlet-name>
+  	<servlet-class>study.j1102.Test1Ok2</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>jTest1Ok2</servlet-name>
+  	<url-pattern>/j1102/test1Ok2</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Filer처리(Controller앞단에서 제어한다.) -->
+  <!-- <filter>
+  	<filter-name>encodingFilter</filter-name>
+  	<filter-class>Filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>encodingFilter</filter-name>
+	<url-pattern>/*</url-pattern>  /* : 여기 들어오는 모든 경로를 filter를 지나서 와라...   	
+  </filter-mapping> -->
+  
+  <!-- 메소드(컨트롤러에 있는)들을 감시... -->
+  <!-- <listener>
+  	<listener-class>study.j1102.Test2Ok</listener-class>
+  </listener> -->
+  
+  <!-- 초기값(공통변수) 설정미리해 두기 -->
+  <context-param>
+    <param-name>logoName</param-name>
+  	<param-value>Java Green Company</param-value> <!-- 여기에 초기값 줌 -->
+  </context-param>
+  <context-param>
+    <param-name>homeAddress</param-name>
+  	<param-value>http://192.168.50.61:9090/javaProject/study/1102_web_xml/test1.jsp</param-value>
+  </context-param>
 </web-app>
