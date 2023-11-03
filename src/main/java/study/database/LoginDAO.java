@@ -63,7 +63,7 @@ public class LoginDAO {
 		}
 	}
 
-	// 로그인 처리
+	// 로그인 처리(loginOk.java)  //비밀번호 맞는지 체크(updateOK.java)
 	public LoginVO getLoginChaeck(String mid, String pwd) {
 		vo = new LoginVO();
 		try {
@@ -115,6 +115,7 @@ public class LoginDAO {
 		return vos;
 	}
 
+	//개별조회
 	public LoginVO getLoginSearch(String sid) {
 		vo = new LoginVO();
 		try {
@@ -123,9 +124,13 @@ public class LoginDAO {
 			pstmt.setString(1, sid);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
+				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
 				vo.setPwd(rs.getString("pwd"));
 				vo.setName(rs.getString("name"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setTodayCount(rs.getInt("todayCount"));
 			}
 		} catch (SQLException e) {
 			System.out.println("sql구문 오류(전체조회) : " + e.getMessage());
@@ -133,5 +138,72 @@ public class LoginDAO {
 			rsClose();
 		}
 		return vo;
+	}
+
+	// 변경된 내용을 DB에 Update처리
+	public void setLoginUpdate(LoginVO vo) {
+		try {
+			sql = "update login set point=?, lastDate=now(), todayCount=?  where mid = ?";  //lastDate=now()를해서 최종 접속일을 로그인한 시점으로 업데이트를한다.
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getPoint());
+			pstmt.setInt(2, vo.getTodayCount());
+			pstmt.setString(3, vo.getMid());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+	}
+
+	// 회원가입 처리
+	public int setJoinOk(LoginVO vo) {
+		int res = 0;
+		try {
+			sql="insert into login values (default,?,?,?,default,default,default)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getMid());
+			pstmt.setString(2, vo.getPwd());
+			pstmt.setString(3, vo.getName());
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(전체조회) : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		
+		return res;
+	}
+
+	// 회원 탈퇴 처리
+	public int setDeleteOk(String mid) {
+		int res = 0;
+		try {
+			sql = "delete from login where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(전체조회) : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	public int setUpdateOk(String mid, String name) {
+		int res = 0;
+		try {
+			sql="update login set name=? where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setString(2, mid);
+			res =pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(전체조회) : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
 	}
 }

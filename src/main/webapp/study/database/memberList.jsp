@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ include file="/include/memberCheck.jsp" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,7 @@
 			<th>아이디</th>
 			<th>성명</th>
 			<th>최종 방문일자</th>
-			<th>포인트</th>
+			<c:if test="${sMid == 'admin'}"><th>포인트</th></c:if>
 			<th>오늘 방문 횟수</th>
 		</tr>
 		<c:forEach var="vo" items="${vos}" varStatus="st">
@@ -29,7 +30,7 @@
 				<td>${vo.mid}</td>
 				<td>${vo.name}</td>
 				<td>${fn:substring(vo.lastDate,0,16)}</td>
-				<td>${vo.point}</td>
+				<c:if test="${sMid == 'admin'}"><td>${vo.point}</td></c:if>
 				<td>${vo.todayCount}</td>
 			</tr>
 		</c:forEach>
