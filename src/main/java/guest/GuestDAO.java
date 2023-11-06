@@ -55,11 +55,13 @@ public class GuestDAO {
 	}
 
 	// 방명록 리스트
-	public ArrayList<GuestVO> getGuestList() {
+	public ArrayList<GuestVO> getGuestList(int startIndexNo, int pageSize) {
 		ArrayList<GuestVO> vos = new ArrayList<GuestVO>();
 		try {
-			sql="select * from guest order by idx desc"; //내림차순
+			sql="select * from guest order by idx desc limit ?,?"; //내림차순
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndexNo);
+			pstmt.setInt(2, pageSize);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				vo = new GuestVO();
@@ -68,7 +70,7 @@ public class GuestDAO {
 				vo.setContent(rs.getString("content"));
 				vo.setEmail(rs.getString("email"));
 				vo.setHomePage(rs.getString("homePage"));
-				vo.setVisitDate(rs.getString("visitDate").substring(0, 16));
+				vo.setVisitDate(rs.getString("visitDate"));
 				vo.setHostIp(rs.getString("hostIp"));
 				vos.add(vo);
 			}
@@ -93,7 +95,7 @@ public class GuestDAO {
 			pstmt.setString(5, hIp);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("SQL 오류(getGuestList) : " +e.getMessage());
+			System.out.println("SQL 오류(setContentW) : " +e.getMessage());
 		} finally {
 			pstmtClose();
 		}
@@ -101,7 +103,7 @@ public class GuestDAO {
 		return res;
 	}
 
-	// 작성한 글 리스트 삭제
+	// 작성한 글 리스트 삭제 (집에서 한거)
 	public int setListDelete(String idx) {
 		int res = 0;
 		try {
@@ -110,10 +112,44 @@ public class GuestDAO {
 			pstmt.setString(1, idx);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("SQL 오류(getGuestList) : " +e.getMessage());
+			System.out.println("SQL 오류(setListDelete) : " +e.getMessage());
 		} finally {
 			pstmtClose();
 		}
 		return res;
+	}
+
+	// 방명록 삭제 처리(학원에서 한거)
+	public int setGuestDelete(int idx) {
+		int res = 0;
+		try {
+			sql="delete from guest where idx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류(setGuestDelete) : " +e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 총 레코드 건수 구하기
+	public int getTotRecCnt() {
+		int totRecCnt = 0;
+		try {
+			sql="select count(*) as cnt from guest";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			totRecCnt = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류(getTotRecCnt) : " +e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecCnt;
 	}
 }

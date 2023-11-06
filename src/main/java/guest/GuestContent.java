@@ -21,6 +21,10 @@ public class GuestContent extends HttpServlet{
 		String cont = request.getParameter("cont")== null ? "" : request.getParameter("cont");
 		String hIp = request.getParameter("hIp")== null ? "" : request.getParameter("hIp");
 	
+		// name부분에 태그를 사용할 수 없도록 막는다..
+		name = name.replace("<", "&lt;");
+		name = name.replace(">", "&gt;");
+		
 		GuestDAO dao = new GuestDAO();
 		
 		int res = dao.setContentW(name,email,homeP,cont,hIp);

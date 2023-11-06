@@ -48,10 +48,10 @@
 			
 			<!-- 세션 값이 들어가 있지 않으면 로그인창으로 이동 -->
 			<c:if test="${sAdmin != 'adminOk'}">
-				<td><a href="${ctp}/guest/adminLogin.jsp" class="btn btn-secondary">관리자</a></td>
+				<td><a href="${ctp}/guest/adminLogin.jsp" class="btn btn-primary ">관리자</a></td>
 			</c:if>
 			<c:if test="${sAdmin == 'adminOk'}">
-				<td><a href="${ctp}/guest/adminLogout" class="btn btn-secondary">관리자 로그아웃</a></td>
+				<td><a href="${ctp}/guest/adminLogout" class="btn btn-primary">관리자 로그아웃</a></td>
 			</c:if>
 			<td class="text-right"><a href="${ctp}/guest/guestInput.jsp" class="btn btn-success">글쓰기</a></td>
 		</tr>
@@ -110,7 +110,7 @@
 				<th>성명</th>
 				<td>${vo.name}</td>
 				<th>방문일자</th>
-				<td>${fn: substring(vo.visitDate,0,19)}</td>
+				<td>${vo.visitDate}</td>
 			</tr>
 			<tr >
 				<th>메일주소</th>
@@ -147,20 +147,14 @@
 	</c:forEach>
 	<br/><br/>
 	<!-- 블록페이지 시작(1블록의 크기를 3개(3Page)로 한다. -->
-	<div class="text-center">
-		<ul class="pagination justify-content-center">
-		<c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+	<div>
 		<!-- 이전블록 pag=${(curBlock-1)*blockSize+1} 부분 해석 => ex)1블럭(4/5/6)일 경우, blockSize는 3 /  1(블럭)-1 = 0 , 0*3(blockSize)=0 , 0+1=1 ==> 1블럭에서 "이전블록"을 클릭했을 시, 1page로 간다..라는 의미이다.. -->
-		<c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageSize}">이전블록</a></li></c:if>
+		<c:if test="${curBlock > 0}"><a href="${ctp}/GuestList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageSize}">이전블록</a></c:if>
 		<c:forEach var="i" begin="${(curBlock * blockSize)+1}" end="${(curBlock * blockSize)+blockSize}" varStatus="st">
 			<!-- 토탈페이지 보다 작을때까지 돌아가야 글이 적혀져 있는 페이지까지만 나온다..  -->
-			<!-- 현재 페이지일 경우 폰트색을 빨간색, 글씨 굴게로 설정 -->
-			<c:if test="${i <= totPage && pag == i}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></c:if>
-			<c:if test="${i <= totPage && pag != i}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></c:if>
+			<c:if test="${i <= totPage}"><a href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></c:if>
 		</c:forEach>
-		<c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
-		<c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${totPage}&pageSize=${pageSize}">마지막페이지</a></li></c:if>
-		</ul>
+		<c:if test="${curBlock < lastBlock}"><a href="${ctp}/GuestList?pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></c:if>
 	</div>
 	<!-- 블록페이지 끝 -->
 	<!-- 
@@ -172,7 +166,7 @@
 	현재블록(1) : 이전블록(0) :     (현재블록이 1에 있을경우 이전블록은 0으로..)
 	4/5/6             1   
 	
-	[이전블록 구하는 공식] (0블록이 시작이지만, 이전페이지로 넘어가기 위해서는 무조건 1블록 이상이 있어야 한다../ 0블록에서는 이전으로 가지 못하지만, 1블록에서 이전페이지를 누르면 밑 1)에 대한 공식에 의해서 0블럭 1페이지로 간다)
+	[이전블록 구하는 공식]
 	(1블록-1)*3+1  = 1페이지
 	(2블록-1)*3 +1 = 4페이지
 	(3블록-1)*3 +1 = 7페이지

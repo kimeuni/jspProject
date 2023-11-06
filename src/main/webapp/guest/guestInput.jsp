@@ -44,9 +44,9 @@
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td><input type="text" name="email" id="email" class="form-control"/></td>
+				<td><input type="text" name="email" id="email" class="form-control""/></td>
 				<th>홈페이지</th>
-				<td><input type="text" name="homeP" id="homeP" class="form-control"/></td>
+				<td><input type="text" name="homeP" id="homeP" class="form-control" value="https://"></td>
 			</tr>
 			<tr>
 				<th>글 작성<span class="pil">*</span></th>
