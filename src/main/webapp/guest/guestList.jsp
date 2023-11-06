@@ -149,15 +149,17 @@
 	<!-- 블록페이지 시작(1블록의 크기를 3개(3Page)로 한다. -->
 	<div class="text-center">
 		<ul class="pagination justify-content-center">
-		<c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+		<c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary " href="${ctp}/GuestList?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
 		<!-- 이전블록 pag=${(curBlock-1)*blockSize+1} 부분 해석 => ex)1블럭(4/5/6)일 경우, blockSize는 3 /  1(블럭)-1 = 0 , 0*3(blockSize)=0 , 0+1=1 ==> 1블럭에서 "이전블록"을 클릭했을 시, 1page로 간다..라는 의미이다.. -->
 		<c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageSize}">이전블록</a></li></c:if>
+		<c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${pag-1}&pageSize=${pageSize}">◀</a></li></c:if>
 		<c:forEach var="i" begin="${(curBlock * blockSize)+1}" end="${(curBlock * blockSize)+blockSize}" varStatus="st">
 			<!-- 토탈페이지 보다 작을때까지 돌아가야 글이 적혀져 있는 페이지까지만 나온다..  -->
 			<!-- 현재 페이지일 경우 폰트색을 빨간색, 글씨 굴게로 설정 -->
 			<c:if test="${i <= totPage && pag == i}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></c:if>
 			<c:if test="${i <= totPage && pag != i}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></c:if>
 		</c:forEach>
+		<c:if test="${pag < totPage }"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${pag+1}&pageSize=${pageSize}">▶</a></li></c:if>
 		<c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
 		<c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${totPage}&pageSize=${pageSize}">마지막페이지</a></li></c:if>
 		</ul>
