@@ -1,4 +1,4 @@
-package study.database;
+package study2.login;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
