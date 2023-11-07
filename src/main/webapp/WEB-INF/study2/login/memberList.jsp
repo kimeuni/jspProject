@@ -12,9 +12,11 @@
 	<jsp:include page="/include/bs4.jsp"/>
 </head>
 <body>
+<jsp:include page="/include/header.jsp"/>
 <p><br/></p>
 <div class="container">
 	<h2>전 체 회 원 리 스 트</h2>
+	<hr/>
 	<table class="table table-hover text-center">
 		<tr class="table-dark text-dark">
 			<th>번호</th>
@@ -38,9 +40,10 @@
 	</table>
 	<hr/>
 	<div>
-		<a href="${ctp}/study/database/memberMain.jsp" class="btn btn-success">돌아가기</a>
+		<a href="${ctp}/memberMain.lo" class="btn btn-success">돌아가기</a>
 	</div>
 </div>
 <p><br/></p>
+<jsp:include page="/include/footer.jsp"/>
 </body>
 </html>

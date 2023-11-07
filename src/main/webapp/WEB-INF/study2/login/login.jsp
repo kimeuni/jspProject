@@ -33,7 +33,7 @@
 				<th>아이디</th>
 				<td>
 					<input type="text" name="mid" id="mid" value="<%= cMid %>" autofocus required class="form-control" />
-					<input type="checkbox" name="idCheck" value="save">ID저장
+					<input type="checkbox" name="idCheck" value="save" checked >ID저장
 				</td>
 			</tr>
 			<tr>
