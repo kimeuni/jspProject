@@ -20,11 +20,11 @@ public class DeleteOkCommand implements LoginInterface {
 		if(res != 0) {
 			dao.connClose();
 			request.setAttribute("msg", "회원탈퇴처리 되었습니다");
-			request.setAttribute("url", request.getContextPath()+"/login.lo");
+			request.setAttribute("url", "login.lo");
 		}
 		else {
 			request.setAttribute("msg", "회원탈퇴처리에 실패하였습니다.");
-			request.setAttribute("url", request.getContextPath()+"/memberMain.lo");
+			request.setAttribute("url", "memberMain.lo");
 		}
 	}
 

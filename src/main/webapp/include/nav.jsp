@@ -27,6 +27,8 @@
 		      <a class="dropdown-item" href="${ctp}/mapping/test5.do">확장자패턴1</a>
 		      <a class="dropdown-item" href="${ctp}/mapping/test5.re">확장자패턴2</a>
 		      <a class="dropdown-item" href="${ctp}/login/login.lo">로그인 연습</a>
+		      <a class="dropdown-item" href="ajaxTest1.st">AJax 연습1</a>
+		      <a class="dropdown-item" href="userList.us">AJax 연습2</a>
 		    </div>
 		  </div>
       </li>    

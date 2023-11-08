@@ -23,7 +23,7 @@ public class UpdateOkCommand implements LoginInterface {
 		// 존재하지 않는 회원일 경우
 		if(vo.getMid() == null) {
 			request.setAttribute("msg", "비밀번호를 다시 확인하세요.");
-			request.setAttribute("url", request.getContextPath()+"/update.lo");
+			request.setAttribute("url", "update.lo");
 		}
 		
 		

@@ -11,7 +11,7 @@
 	<script>
 		'use strict'
 		
-		alert("${msg}");
+		if("${msg}" != "NO") alert("${msg}");
 		location.href = "${url}";
 	</script>
 </head>

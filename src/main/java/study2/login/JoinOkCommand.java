@@ -25,11 +25,11 @@ public class JoinOkCommand implements LoginInterface {
 		
 		if(res != 0) {
 			request.setAttribute("msg", "회원가입 되었습니다.");
-			request.setAttribute("url", request.getContextPath()+"/login.lo");
+			request.setAttribute("url", "login.lo");
 		}
 		else {
 			request.setAttribute("msg", "회원가입에 실패하였습니다.");
-			request.setAttribute("url", request.getContextPath()+"/join.lo");
+			request.setAttribute("url", "join.lo");
 		}
 		
 	}

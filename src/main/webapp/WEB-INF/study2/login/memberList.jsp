@@ -40,7 +40,7 @@
 	</table>
 	<hr/>
 	<div>
-		<a href="${ctp}/memberMain.lo" class="btn btn-success">돌아가기</a>
+		<a href="memberMain.lo" class="btn btn-success">돌아가기</a>
 	</div>
 </div>
 <p><br/></p>

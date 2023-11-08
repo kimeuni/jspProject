@@ -18,20 +18,20 @@
 	}
 	function memberS(){
 		let sid = document.getElementById("sid").value;
-		location.href="${ctp}/database/ex_memberSer?sid="+sid;
+		location.href="ex_memberSer.lo?sid="+sid;
 	}
 	
 	function mLogout() {
 		let ans = confirm("정말로 로그아웃 하시겠습니까?");
 		if(ans){
-			location.href="${ctp}/memberLogout.lo";
+			location.href="memberLogout.lo";
 		}
 	}
 	
 	function deleteCheck(){
 		let ans = confirm("정말로 회원탈퇴 하시겠습니까?");
 		if(ans){
-			location.href="${ctp}/deleteOk.lo";
+			location.href="deleteOk.lo";
 		}
 	}
 </script>
@@ -60,8 +60,8 @@
 	<div class="row">
 		<div class="col"></div>
 		<div class="col"><a href="javascript:searchCheck()" class="btn btn-success form-control">개별조회</a></div>
-		<div class="col"><a href="${ctp}/memberList.lo" class="btn btn-primary form-control">전체조회</a></div>
-		<div class="col"><a href="${ctp}/update.lo" class="btn btn-info form-control">정보수정</a></div>
+		<div class="col"><a href="memberList.lo" class="btn btn-primary form-control">전체조회</a></div>
+		<div class="col"><a href="update.lo" class="btn btn-info form-control">정보수정</a></div>
 		<div class="col"><input type="button" onclick="mLogout()" value="로그아웃" class="btn btn-warning form-control"></div>
 		<div class="col"><a href="javascript:deleteCheck()" class="btn btn-danger form-control">회원탈퇴</a></div>
 		<%-- <div class="col"><a href="${ctp}/database/memberLogout" class="btn btn-danger form-control">로그아웃</a></div> --%>

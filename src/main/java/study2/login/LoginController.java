@@ -79,6 +79,18 @@ public class LoginController extends HttpServlet {
 			
 			viewPage += "/memberList.jsp";
 		}
+		else if(com.equals("/ex_memberSer")) {
+			command = new Ex_memberSerCommand();
+			command.execute(request, response);
+			
+			viewPage = "/include/msg.jsp";
+		}
+		else if(com.equals("/memberMainSearch")) {
+			command = new MemberMainSearchCommand();
+			command.execute(request, response);
+			
+			viewPage += "/memberMain.jsp";
+		}
 		
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
