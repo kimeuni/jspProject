@@ -25,7 +25,7 @@ public class MemberLoginOkCommand implements memberInterface {
 		
 		if(!vo.getMid().equals(mid)) {
 			request.setAttribute("msg", "아이디를 확인하세요.");
-			request.setAttribute("url", "MemberLogin.mem");
+			request.setAttribute("url", "memberLogin.mem");
 			return;
 		}
 		
@@ -34,7 +34,7 @@ public class MemberLoginOkCommand implements memberInterface {
 
 		if(!vo.getPwd().equals(pwd)) {
 			request.setAttribute("msg", "비밀번호를 확인하세요.");
-			request.setAttribute("url", "MemberLogin.mem");
+			request.setAttribute("url", "memberLogin.mem");
 			return;
 		}
 		

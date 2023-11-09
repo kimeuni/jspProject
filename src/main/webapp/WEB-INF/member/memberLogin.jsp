@@ -27,11 +27,11 @@
 <jsp:include page="/include/header.jsp"/>
 <p><br/></p>
 <div class="container">
-	<h2>로 그 인</h2>
+	<h2 style="text-align:center;">로 그 인</h2>
 	<p><br/></p>
 	<div class="container">
 		<form name="loginForm" method="post" action="memberLoginOk.mem">
-			<table class="table table-bordered">
+			<table class="table table-bordered " style="width:800px; margin:0 auto;">
 				<tr>
 					<th colspan="2" class="text-center">회원 로그인</th>
 				</tr>
@@ -54,11 +54,11 @@
 					</td>
 				</tr>
 			</table>
-			<table class="table ">
+			<table style="width:1050px; margin: 10px">
 				<tr>
 					<td colspan="2" class="text-center">
-						[<a href="#">아이디찾기</a>] /
-						[<a href="#">비밀번호찾기</a>]
+						[<a href="memberFindMid.mem">아이디찾기</a>] /
+						[<a href="memberFindPwd.mem">비밀번호찾기</a>]
 					</td>
 				</tr>
 			</table>

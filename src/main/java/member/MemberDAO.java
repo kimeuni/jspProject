@@ -147,5 +147,68 @@ public class MemberDAO {
 		return res;
 	}
 	
+	// 이메일 검색(아이디찾기)
+	public String getMemberEmailSearch(String email) {
+		String res = "";
+        
+        try {
+            sql = "select mid from member where email = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+            while(rs.next()) {
+                res += rs.getString("mid") + "/";
+            }
+            if(res != "") res = res.substring(0,res.length()-1);
+            if(res == "") res = "0";
+            System.out.println("res " +res);
+        } catch (SQLException e) {
+            System.out.println("SQL 구문 오류(아이디 찾기) : " + e.getMessage());
+        } finally {
+            rsClose();
+        }
+        
+        return res;
+	}
+	
+	// 아이디 이메일 확인(비밀번호 찾기)
+	public String getmemberMidEmailCheck(String mid, String email) {
+		String res = "0";
+		try {
+			sql = "select * from member where mid=? and email=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, email);
+			rs = pstmt.executeQuery();
+			if(rs.next()) res = "1";
+			System.out.println(res);
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(비밀번호 찾기) : " + e.getMessage());
+			e.getStackTrace();
+		} finally {
+			rsClose();
+		}
+		return res;
+	}
+	
+	// 임시비밀번호 데이터베이스에 저장
+	public int setImsiMemberPwd(String mid, String email, String pwd) {
+		int re = 0;
+		try {
+			sql="update member set pwd=? where mid=? and email=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pwd);
+			pstmt.setString(2, mid);
+			pstmt.setString(3, email);
+			re = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(비밀번호 찾기) : " + e.getMessage());
+			e.getStackTrace();
+		} finally {
+			pstmtClose();
+		}
+		return re;
+	}
+	
 	
 }
