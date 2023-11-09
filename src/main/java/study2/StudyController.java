@@ -27,6 +27,10 @@ public class StudyController extends HttpServlet {
 			viewPage = "/include/msg.jsp";
 			
 		}
+		else if(com.equals("/uuidProcess")) {
+			viewPage += "/uuid/uuidForm.jsp";
+			
+		}
 		
 		request.getRequestDispatcher(viewPage).forward(request, response);
 		

@@ -8,6 +8,8 @@ public class SecurityUtil {
     String sha = "";
     try{
        MessageDigest sh = MessageDigest.getInstance("SHA-256");
+//       int salt = (int)(Math.random()*100)+1;
+//       str += salt;  //salt를 할 경우 db에 salt까지 같이 저장해주어야 한다.
        sh.update(str.getBytes());
        byte byteData[] = sh.digest();
        StringBuffer sb = new StringBuffer();
