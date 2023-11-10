@@ -20,9 +20,9 @@ public class MemberFindPwdOkCommand implements memberInterface {
 		
 		String res = dao.getmemberMidEmailCheck(mid,email);
 		
-		// 아이디, 이메일 같은 회원 존재.. 임시 비밀번호 발급 후, 데이터베이스 저장
+		// 아이디, 이메일 같은 회원 존재..(res가 1일경우) 임시 비밀번호 발급 후, 데이터베이스 저장
 		if(!res.equals("0")) {
-			UUID uid = UUID.randomUUID(); // 임시로 줄 랜덤 16진수 숫자 불러오기
+			UUID uid = UUID.randomUUID(); // 임시로 줄 랜덤 16진수 숫자 불러오기 (임시 비밀번호 발급)
 			String uidPwd = uid.toString().substring(0,8); // 너무 길기 때문에 substring으로 잘라줌
 			SecurityUtil security = new SecurityUtil();
 			String pwd = security.encryptSHA256(uidPwd); //암호화

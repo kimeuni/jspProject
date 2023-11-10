@@ -16,16 +16,26 @@
 			margin: 0 auto;
 			border: 1px solid gray;
 			width: 600px;
-			padding: 10px;
+			padding: 10px 30px;
 			text-align:center;
+			
 							
+		}
+		#midF {
+			text-align:center;  
+			border: 1px solid gray; 
+			margin: auto;
+			width: 350px;
+			background-color: #f1e5d4;
+			border-radius: 10px;
+			padding: 20px;
 		}
 	</style>
 	<script>
 		'use strict'
 		
-		let str = "";
 		function midS(){
+			let str = "";
 			let email = myform.email1.value.trim();
 			/* alert(email); */
 			
@@ -46,16 +56,16 @@
 						else {
 							let resArr = res.split("/");
 							str += "<hr/>";
-							str += "<div style='text-align:center;  border: 1px solid gray; padding:10px'";
+							str += "<div id='midF'";
 							str += "<hr/>";
-							str += "<h2 class='text-center'>검색 결과</h2><br/>";
+							str += "<h2 class='text-center' style='margin:5px 10px;'>검색 결과</h2><br/>";
 							for(let r of resArr){
 								let re = "";
 								for(let i=0; i<r.length; i++){
 									if((i+1)%3==0) re += "*";
 									else re += r.charAt(i);
 								}
-								str += "<b>" + re + "</b><br/>";
+								str += "<span style='margin:20px 10px;'><b>" + re + "</b></span><br/>";
 							}
 							str += "</div>"
 							

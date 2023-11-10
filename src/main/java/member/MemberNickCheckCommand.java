@@ -5,11 +5,13 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class MemberNickCheckCommand implements memberInterface {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nickName = request.getParameter("nickName")== null ? "" : request.getParameter("nickName");
+//		System.out.println("닉네임 중복체크 ");
 		
 		MemberDAO dao = new MemberDAO();
 		

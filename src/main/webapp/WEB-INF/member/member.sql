@@ -17,7 +17,7 @@ create table member (
 	hobby varchar(100), 						/* 취미 */
 	photo varchar(100) default 'noimage.jpg',	/* 회원 사진(사진 등록 안할시 noimage.jpg가 뜬다) */
 	content text,								/* 회원 소개 */
-	userInfo char(3) default '공개',				/* 회원 정보 공개여부(공개/비공개) */
+	userInfor char(3) default '공개',				/* 회원 정보 공개여부(공개/비공개) */
 	userDel char(2) default 'NO', 				/* 회원 탈퇴신청(NO:현재 활동중, OK:탈퇴신청) */
 	point int default 100, 						/* 회원 누적포인트(가입시 기본 100포인트 지급, 1회방문시 10포인트 , 1일 최대 50포인트까지 허용, 물건구매시 100원당 1포인트 증가) */
 	level int default 1, 						/* 회원등급(0:관리자 1:준회원 2:정회원 3:우수회원 4:운영자) */

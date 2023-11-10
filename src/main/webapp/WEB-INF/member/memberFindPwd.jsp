@@ -24,8 +24,8 @@
 	<script>
 		'use strict'
 		
-		let str = "";
 		function pwdS(){
+			let str = "";
 			let mid = myform.mid.value.trim();
 			let email = myform.email.value.trim();
 			

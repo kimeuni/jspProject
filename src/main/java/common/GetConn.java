@@ -6,11 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// 싱글톤
+// 싱글톤 (1번만 불러서 사용하기 위해 만들었다.)
 public class GetConn {
-	private Connection conn = null;
-	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
+//	private Connection conn = null;
+	private static Connection conn = null;
 	
 	private String driver = "com.mysql.jdbc.Driver";
 	private String url = "jdbc:mysql://localhost:3306/javaProject";
@@ -18,7 +17,7 @@ public class GetConn {
 	private String password ="1234";
 	
 	// 메소드 영역에 올림.
-	private static GetConn instance = new GetConn();
+	private static final GetConn instance = new GetConn();
 	
 	private GetConn() {
 		try {
@@ -32,27 +31,13 @@ public class GetConn {
 	}
 	
 	// GetConn객체를 외부에서 연결해서 사용해주기 위한 메소드를 public 선언자로 만들어준다.
-	public Connection getConn() {
+//	public Connection getConn() {
+	public static Connection getConn() {
 		return conn;
 	}
 	
-	public static GetConn getInstance() {
-		return instance;
-	}
+//	public static GetConn getInstance() {
+//		return instance;
+//	}
 	
-	public void pstmtClose() {
-		if(pstmt != null) {
-			try {
-				pstmt.close();
-			} catch (Exception e) {}
-		}
-	}
-	public void rsClose() {
-		if(rs != null) {
-			try {
-				rs.close();
-			} catch (Exception e) {}
-		}
-		pstmtClose();
-	}
 }
