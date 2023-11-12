@@ -264,12 +264,14 @@ public class MemberDAO {
 		return res;
 	}
 	
-	// 전체 멤버 리스트
-	public ArrayList<MemberVO> getMemberList() {
+	// 전체 멤버 리스트 (페이징 처리 o)
+	public ArrayList<MemberVO> getMemberListPageing(int startIndexNo, int pageSize) {
 		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 		try {
-			sql = "select * from member order by idx desc";
+			sql = "select * from member order by idx desc limit ?,?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndexNo);
+			pstmt.setInt(2, pageSize);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				vo = new MemberVO();
@@ -323,6 +325,148 @@ public class MemberDAO {
 			rsClose();
 		}
 		return res;
+	}
+	
+	// 전체 레코드 수 구하기
+	public int getMemberTotRecode() {
+		int totRecode = 0;
+		try {
+			sql="select count(*) as cnt from member";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+
+			totRecode = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(전체 레코드 수) : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecode;
+	}
+	
+	// 회원 전체리스트 (페이징처리 x)
+	public ArrayList<MemberVO> getMemberList() {
+		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
+		try {
+			sql = "select * from member order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				vo = new MemberVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setName(rs.getString("name"));
+				vo.setGender(rs.getString("gender"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setTel(rs.getString("tel"));
+				vo.setAddress(rs.getString("address"));
+				vo.setEmail(rs.getString("email"));
+				vo.setHomePage(rs.getString("homePage"));
+				vo.setJob(rs.getString("job"));
+				vo.setHobby(rs.getString("hobby"));
+				vo.setPhoto(rs.getString("photo"));
+				vo.setContent(rs.getString("content"));
+				vo.setUserInfor(rs.getString("userInfor"));
+				vo.setUserDel(rs.getString("userDel"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLevel(rs.getInt("level"));
+				vo.setVisitCnt(rs.getInt("visitCnt"));
+				vo.setStartDate(rs.getString("startDate"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(전체 멤버 리스트) : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+	
+	// 등급별 리스트 출력
+	public ArrayList<MemberVO> getMemberLevelSearch(int level, int startIndexNo, int pageSize) {
+		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
+		try {
+			sql ="select * from member where level=? order by idx desc limit ?,?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, level);
+			pstmt.setInt(2, startIndexNo);
+			pstmt.setInt(3, pageSize);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setName(rs.getString("name"));
+				vo.setGender(rs.getString("gender"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setTel(rs.getString("tel"));
+				vo.setAddress(rs.getString("address"));
+				vo.setEmail(rs.getString("email"));
+				vo.setHomePage(rs.getString("homePage"));
+				vo.setJob(rs.getString("job"));
+				vo.setHobby(rs.getString("hobby"));
+				vo.setPhoto(rs.getString("photo"));
+				vo.setContent(rs.getString("content"));
+				vo.setUserInfor(rs.getString("userInfor"));
+				vo.setUserDel(rs.getString("userDel"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLevel(rs.getInt("level"));
+				vo.setVisitCnt(rs.getInt("visitCnt"));
+				vo.setStartDate(rs.getString("startDate"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vos.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(등급별 리스트 출력) : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+	
+	// 등급별 레코드 수
+	public int getMemberLevelTotRecode(int level) {
+		int totRecode = 0;
+		try {
+			sql="select count(*) as cnt from member where level=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, level);
+			rs = pstmt.executeQuery();
+			rs.next();
+
+			totRecode = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(등급별 레코드 수) : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecode;
+	}
+	
+	// 총 방문일, 오늘 방문일, 포인트 정보 업데이트
+	public void setLoginUpdate(MemberVO vo) {
+		try {
+			sql="update member set todayCnt=?,visitCnt=?, point=?, lastDate=now() where mid=?";
+			pstmt =conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getTodayCnt());
+			pstmt.setInt(2, vo.getVisitCnt());
+			pstmt.setInt(3, vo.getPoint());
+			pstmt.setString(4, vo.getMid());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(총 방문일, 오늘 방문일, 포인트 정보 업데이트) : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
 	}
 	
 	

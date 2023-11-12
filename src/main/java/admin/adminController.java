@@ -29,6 +29,9 @@ public class adminController extends HttpServlet{
 		if(level >0) {
 			request.getRequestDispatcher("/").forward(request, response);
 		}
+		else if(com.equals("/adminHeader")) {
+			viewPage += "/adminHeader.jsp";
+		}
 		else if(com.equals("/adminMain")) {
 			viewPage += "/adminMain.jsp";
 		}
@@ -36,6 +39,9 @@ public class adminController extends HttpServlet{
 			viewPage += "/adminLeft.jsp";
 		}
 		else if(com.equals("/adminContent")) {
+			command = new AdminContentCommand();
+			command.execute(request, response);
+			
 			viewPage += "/adminContent.jsp";
 		}
 		//멤버 전체 리스트를 어드민에서 만들지, 멤버에서 만들지 잘 생각하고 만들어볼 것.
@@ -48,6 +54,11 @@ public class adminController extends HttpServlet{
 			command = new MemberLevelChangeCommand();
 			command.execute(request, response);
 			return;
+		}
+		else if(com.equals("/adminMemberLevelSearch")) {
+			command = new MemberLevelSearchCommand();
+			command.execute(request, response);
+			viewPage += "/member/adminMemberList.jsp";
 		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}

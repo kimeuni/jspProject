@@ -40,7 +40,13 @@
 					alert("전송 오류~");
 				}
 			});
+		}
+		
+		
+		function levelSearch(e){
+			let level = e.value;
 			
+			location.href = "adminMemberLevelSearch.ad?level="+level;
 		}
 	</script>
 </head>
@@ -52,11 +58,11 @@
 		<tr>
 			<td>
 				<div>등급별검색   <!-- onchange를 누르면 리스트에 출력되는게 바뀌도록..처리... ( -->
-					<select>
-						<option>관리자</option>
-						<option>준회원</option>
-						<option>정회원</option>
-						<option>우수회원</option>
+					<select name="levelS" onchange="levelSearch(this)">
+						<option value="0" ${level== 0 ? 'selected' : '' }>관리자</option>
+						<option value="1" ${level== 1 ? 'selected' : '' }>준회원</option>
+						<option value="2" ${level== 2 ? 'selected' : '' }>정회원</option>
+						<option value="3" ${level== 3 ? 'selected' : '' }>우수회원</option>
 					</select>
 				</div>
 			</td>
@@ -76,7 +82,7 @@
 		<tr>
 			<c:forEach var="vo" items="${vos}" varStatus="st">
 				<tr>
-					<td>${vo.idx }</td>
+					<td>${startNo }</td>
 					<td>${vo.mid }</td>
 					<td>${vo.nickName }</td>
 					<td>${vo.name }</td>
@@ -94,12 +100,26 @@
 						</form>
 					</td>
 				</tr>
+				<c:set var="startNo" value="${startNo-1}"/>
 			</c:forEach>
 		</tr>
 		<tr><td colspan="8" class="m-0 p-0"></td></tr>
 	</table>
 	<br/>
-	<!-- 페이징 처리하기 -->
+	<div class="text-center">
+		<ul class="pagination justify-content-center">
+		<c:if test="${pageSu > 1}"><li class="page-item"><a class="page-link text-secondary " href="${ctp}/adminMemberList.ad?pageSu=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+		<c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/adminMemberList.ad?pageSu=${(curBlock-1)*blockSize+1}&pageSize=${pageSize}">이전블록</a></li></c:if>
+		<c:if test="${pageSu > 1}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/adminMemberList.ad?pageSu=${pageSu-1}&pageSize=${pageSize}">◀</a></li></c:if>
+		<c:forEach var="i" begin="${(curBlock * blockSize)+1}" end="${(curBlock * blockSize)+blockSize}" varStatus="st">
+			<c:if test="${i <= totPage && pageSu == i}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="${ctp}/adminMemberList.ad?pageSu=${i}&pageSize=${pageSize}">${i}</a></c:if>
+			<c:if test="${i <= totPage && pageSu != i}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/adminMemberList.ad?pageSu=${i}&pageSize=${pageSize}">${i}</a></c:if>
+		</c:forEach>
+		<c:if test="${pageSu < totPage }"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/adminMemberList.ad?pageSu=${pageSu+1}&pageSize=${pageSize}">▶</a></li></c:if>
+		<c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/adminMemberList.ad?pageSu=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
+		<c:if test="${pageSu < totPage}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/adminMemberList.ad?pageSu=${totPage}&pageSize=${pageSize}">마지막페이지</a></li></c:if>
+		</ul>
+	</div>
 </div>
 <p><br/></p>
 </body>

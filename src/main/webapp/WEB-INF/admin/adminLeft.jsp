@@ -8,6 +8,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>adminLeft.jsp</title>
 	<jsp:include page="/include/bs4.jsp"/>
+	<style>
+		hr{
+			background: #000;
+			height:1px;
+    		border:0;
+		}
+	</style>
 </head>
 <body style="background-color:#eee">
 <p><br/></p>

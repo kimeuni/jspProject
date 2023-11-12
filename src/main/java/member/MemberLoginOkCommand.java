@@ -1,8 +1,11 @@
 package member;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,7 +18,7 @@ public class MemberLoginOkCommand implements memberInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
 		String pwd = request.getParameter("pwd")==null ? "" : request.getParameter("pwd");
-		String idCheck = request.getParameter("idCheck")==null ? "No" : request.getParameter("idCheck");
+		String idCheck = request.getParameter("idCheck")==null ? "NO" : request.getParameter("idCheck");
 		System.out.println("mid : " + mid);
 		
 		MemberDAO dao = new MemberDAO();
@@ -52,6 +55,43 @@ public class MemberLoginOkCommand implements memberInterface {
 		session.setAttribute("sLevel", vo.getLevel());
 		session.setAttribute("strLevel", strLevel);
 		
+		// 2. 쿠키 저장
+		if(idCheck.equals("save")) {
+			Cookie cookie = new Cookie("cMid", mid);
+			cookie.setMaxAge(60*60*24*5);
+			cookie.setPath("/");
+			
+			response.addCookie(cookie);
+		}
+		// 아이디 저장 체크 x시 쿠기 삭제
+		else if(idCheck.equals("NO")) {
+			Cookie[] cookies = request.getCookies();
+			for(int i=0; i<cookies.length; i++) {
+				if(cookies[i].getName().equals("cMid")) {
+					cookies[i].setMaxAge(0);
+					cookies[i].setPath("/");
+					
+					response.addCookie(cookies[i]);
+				}
+			}
+		}
+		
+		//3. 방문횟수,포인트 처리
+		Date today = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String strToday = sdf.format(today);
+		
+		if(strToday.substring(0,10).equals(vo.getLastDate().substring(0,10))) {
+			vo.setTodayCnt(vo.getTodayCnt()+1); // 방문포인트 증가
+			if(vo.getTodayCnt() <= 5) vo.setPoint(vo.getPoint()+10);
+		}
+		else { 
+			vo.setTodayCnt(1);
+			vo.setPoint(vo.getPoint()+10);
+		}
+		vo.setVisitCnt(vo.getVisitCnt()+1);
+		
+		dao.setLoginUpdate(vo);
 		
 		// 처리 완료후 메세지 출력 후 회원 메인창으로 전송한다.
 		request.setAttribute("msg", mid+"님 로그인되었습니다.");
