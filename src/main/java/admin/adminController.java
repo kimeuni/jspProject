@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import admin.member.MemberLevelChangeCommand;
+import admin.member.MemberLevelSearchCommand;
 import member.MemberListCommand;
 
 @SuppressWarnings("serial")
@@ -25,8 +27,15 @@ public class adminController extends HttpServlet{
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
 		
+		// 이런식으로하면 메인화면에 데이터베이스를 불러와 꾸밀 수 있다 (실무에서는 안씀)
+		if(com.equals("/main")) {
+			command = new MainCommand();
+			command.execute(request, response);
+			
+			viewPage = "/WEB-INF/main/main.jsp";
+		}
 		// 관리자가 아니면 들어오지 못하도록 처리..
-		if(level >0) {
+		else if(level >0) {
 			request.getRequestDispatcher("/").forward(request, response);
 		}
 		else if(com.equals("/adminHeader")) {
@@ -46,6 +55,8 @@ public class adminController extends HttpServlet{
 		}
 		//멤버 전체 리스트를 어드민에서 만들지, 멤버에서 만들지 잘 생각하고 만들어볼 것.
 		else if(com.equals("/adminMemberList")) {
+			// 이거 만들필요없이 adminMemberLevelSearch.ad 에서 전체,등급별 전부 처리했기 때문에 
+			// adminMemberLevelSearch을 불러서 사용하면 된다.. 일딴 지우지 않고 남겨놓음..  -2023-11-13-
 			command = new MemberListCommand();
 			command.execute(request, response);
 			viewPage += "/member/adminMemberList.jsp";
@@ -60,6 +71,13 @@ public class adminController extends HttpServlet{
 			command.execute(request, response);
 			viewPage += "/member/adminMemberList.jsp";
 		}
+		//
+		else if(com.equals("/adminMemberInfor")) {
+			command = new AdminMemberInforCommand();
+			command.execute(request, response);
+			viewPage += "/member/adminMemberInfor.jsp";
+		}
+		
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

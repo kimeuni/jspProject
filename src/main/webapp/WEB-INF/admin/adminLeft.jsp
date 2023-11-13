@@ -19,7 +19,7 @@
 <body style="background-color:#eee">
 <p><br/></p>
 <div class="text-center">
-	<h5>관리자메뉴</h5>
+	<h5><a href="adminContent.ad" target="adminContent">관리자메뉴</a></h5>
 	<hr/>
 	<p><a href="${ctp}/" target="_top">홈으로</a>
 	<hr/>
@@ -30,7 +30,7 @@
 	<hr/>
 	<div>
 		<h4>일반관리</h4>
-		<div><a href="adminMemberList.ad" target="adminContent">회원리스트</a></div>
+		<div><a href="adminMemberLevelSearch.ad" target="adminContent">회원리스트</a></div>
 		<div><a href="#" target="adminContent">게시판리스트</a></div>
 	</div>
 </div>

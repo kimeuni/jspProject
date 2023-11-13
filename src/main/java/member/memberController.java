@@ -115,6 +115,34 @@ public class memberController extends HttpServlet{
 			command.execute(request, response);
 			return;
 		}
+		// 회원 탈퇴 신청 처리
+		else if(com.equals("/memberDeleteCheck")) {
+			command = new MemberDeleteCheckCommand();
+			command.execute(request, response);
+			
+			return;
+		}
+		// 회원탈퇴신청 후 30일경과하여 데이터베이스에서 삭제처리
+		else if(com.equals("/memberDeleteOk")) {
+			command = new MemberDeleteOkCommand();
+			command.execute(request, response);
+			
+			return;
+		}
+		// 회원이 볼 수 있는 멤버 전체 리스트
+		else if(com.equals("/mList")) {
+			command = new MListCommand();
+			command.execute(request, response);
+			
+			viewPage += "/mList.jsp";
+		}
+		// 회원이 볼 수 있는 멤버 개인 정보
+		else if(com.equals("/mInfor")) {
+			command = new MInforCommand();
+			command.execute(request, response);
+			
+			viewPage += "/mInfor.jsp";
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

@@ -26,7 +26,7 @@ public class AdminContentCommand implements adminInterface {
 				junHoiwonCnt++;
 			}
 		}
-//		System.out.println(junHoiwonCnt);
+		System.out.println(junHoiwonCnt);
 		
 		if(vos != null) {
 			request.setAttribute("vos", vos);

@@ -37,3 +37,6 @@ drop table member;
 desc member;
 
 select * from member;
+
+select *, timestampdiff(day,lastDate,now()) as deleteDiff from member order by idx desc limit 0,5  /* now()(현재 날짜)에서 lastDate(최종접속일)을 뺀 값이 나온다.. */
+/* deleteDiff : 가상의 필드 (VO에 추가해줌) */

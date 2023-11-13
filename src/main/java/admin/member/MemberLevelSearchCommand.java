@@ -1,4 +1,4 @@
-package member;
+package admin.member;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,25 +8,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import admin.adminInterface;
+import member.MemberDAO;
+import member.MemberVO;
 
-// 멤버 전체 리스트 및 페이징 처리
-public class MemberListCommand implements adminInterface {
+public class MemberLevelSearchCommand implements adminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int level = request.getParameter("level")== null ? 99 : Integer.parseInt(request.getParameter("level"));
+		int level = request.getParameter("level")==null ? 99 : Integer.parseInt(request.getParameter("level"));
 		
 		MemberDAO dao = new MemberDAO();
 		
-
 		// 1. 현재 페이지를 구한다
 		int pageSu = request.getParameter("pageSu")== null ? 1 : Integer.parseInt(request.getParameter("pageSu"));
 		
 		// 2. 작성된 글이 총 몇개인지 구하기
-		int totRecode = dao.getMemberTotRecode();
+		int totRecode = dao.getMemberLevelTotRecode(level);
 		
 		// 3. 한 페이지에 몇개를 보이게 할 것인지
-		int pageSize = 10;
+//		int pageSize = 10;
+		int pageSize = request.getParameter("pageSize")==null ? 10 : Integer.parseInt(request.getParameter("pageSize"));
 		
 		// 4. 총 page 수 구하기
 		int totPage = (totRecode%pageSize)== 0 ? (totRecode/pageSize) : (totRecode/pageSize)+1;
@@ -48,8 +49,7 @@ public class MemberListCommand implements adminInterface {
 		// 3. 마지막 블럭을 구한다
 		int lastBlock = (totPage-1)/blockSize;
 		
-		// 멤버 전체 리스트 출력
-		ArrayList<MemberVO> vos = dao.getMemberListPageing(startIndexNo,pageSize);
+		ArrayList<MemberVO> vos = dao.getMemberLevelSearch(level,startIndexNo,pageSize);
 		
 		// 리스트 화면에 보이는 거.. level 선택할 때마다 다르게 표시하기.
 		String strLevel = "";
@@ -60,6 +60,7 @@ public class MemberListCommand implements adminInterface {
 		else strLevel = "전체회원";
 		
 		request.setAttribute("vos", vos);
+		request.setAttribute("level", level);
 		request.setAttribute("pageSu", pageSu);
 		request.setAttribute("totPage", totPage);
 		request.setAttribute("pageSize", pageSize);
@@ -68,7 +69,6 @@ public class MemberListCommand implements adminInterface {
 		request.setAttribute("curBlock", curBlock);
 		request.setAttribute("lastBlock", lastBlock);
 		request.setAttribute("strLevel", strLevel);
-		request.setAttribute("level", level);
 	}
 
 }

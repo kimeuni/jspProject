@@ -29,7 +29,11 @@
 	<p>방명록 새글 : ??? </p>
 	<p>게시글 새글 : ??? </p>
 	<p>신규등록회원(준회원) :
-	<c:if test="${junHoiwonCnt>1}"> <a href="adminMemberLevelSearch.ad?level=1">${junHoiwonCnt}명</a><span class="blink"><sup ><font color="red">new</font></sup></span></c:if>  <!-- 오늘 등록한 회원을 확인하는 법: 최초가입일이 오늘인사람..(이렇게 하면 만약 매일 들어오지 않으면 신규등록 회원을 볼 수 없다는 단점이 있음) or 가입만하면 레벨이 <준회원>으로 되어있는데 준회원인 사람은 신규등록회원으로 친다.. -->
+	<!-- 집에서 한건 주석처리.. -->
+	<%-- <c:if test="${junHoiwonCnt>=1}"> <a href="adminMemberLevelSearch.ad?level=1">${junHoiwonCnt}명</a><span class="blink"><sup ><font color="red">new</font></sup></span></c:if>  <!-- 오늘 등록한 회원을 확인하는 법: 최초가입일이 오늘인사람..(이렇게 하면 만약 매일 들어오지 않으면 신규등록 회원을 볼 수 없다는 단점이 있음) or 가입만하면 레벨이 <준회원>으로 되어있는데 준회원인 사람은 신규등록회원으로 친다.. -->
+	<c:if test="${junHoiwonCnt==0}"><a href="adminMemberLevelSearch.ad?level=1">${junHoiwonCnt}명</a></c:if> --%>
+	<!-- 학원에서한거 (멤버 리스트에 같이 넣음) -->
+	<c:if test="${junHoiwonCnt>=1}"> <a href="adminMemberLevelSearch.ad?level=1">${junHoiwonCnt}명</a><span class="blink"><sup ><font color="red">new</font></sup></span></c:if>  <!-- 오늘 등록한 회원을 확인하는 법: 최초가입일이 오늘인사람..(이렇게 하면 만약 매일 들어오지 않으면 신규등록 회원을 볼 수 없다는 단점이 있음) or 가입만하면 레벨이 <준회원>으로 되어있는데 준회원인 사람은 신규등록회원으로 친다.. -->
 	<c:if test="${junHoiwonCnt==0}"><a href="adminMemberLevelSearch.ad?level=1">${junHoiwonCnt}명</a></c:if>
 	</p>
 	
