@@ -1,6 +1,7 @@
 package board;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +18,33 @@ public class BoardGoodCheckCommand implements BoardInterface {
 		
 		BoardDAO dao = new BoardDAO();
 		
-		// 좋아요 수 증가처리
-		int res = dao.setBoardGoodCheck(idx);
+		ArrayList<BoardVO> vos = dao.getBoardList(0, 5);
 		
+		// 좋아요 수 증가처리 (중복허용x)
+		
+		int res = 0;
+		String[] sGoodCheckMid1;
+		String checkMid = "";
+		int checkIdx = 0;
+		
+		String sGoodCheckMid = session.getAttribute("sGoodCheckMid")==null ? "" : (String)session.getAttribute("sGoodCheckMid");
+		if(!sGoodCheckMid.equals("") && sGoodCheckMid != null) {
+			sGoodCheckMid1 = sGoodCheckMid.split("/");
+			checkMid = sGoodCheckMid1[0];
+			checkIdx = Integer.parseInt(sGoodCheckMid1[1]);
+		}
+		
+		if(sGoodCheckMid.equals("") || sGoodCheckMid == null || checkIdx != idx) {
+			res = dao.setBoardGoodCheck(idx);
+			session.setAttribute("sGoodCheckMid", mid + "/"+ idx);
+			System.out.println(sGoodCheckMid);
+		}
+		else {
+			if(checkMid.equals(mid) && checkIdx == idx) {
+				res = 0;
+			}
+			
+		}
 		
 		response.getWriter().write(res+"");
 		
