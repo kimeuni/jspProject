@@ -431,7 +431,7 @@ public class MemberDAO {
 				vo.setLastDate(rs.getString("lastDate"));
 				vo.setTodayCnt(rs.getInt("todayCnt"));
 				
-				vo.setDeleteDiff(rs.getInt("deleteDiff"));
+				vo.setDeleteDiff(rs.getInt("deleteDiff"));  //가상의 변수 vo에 담기.. (날짜 비교)
 				
 				vos.add(vo);
 			}

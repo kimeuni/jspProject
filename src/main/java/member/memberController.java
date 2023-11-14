@@ -23,69 +23,83 @@ public class memberController extends HttpServlet{
 		int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
 		
 		
-		
+		// 회원가입(Join)화면 view
 		if(com.equals("/memberJoin")) {
 			viewPage += "/memberJoin.jsp";
 		}
+		// 회원가입시, 아이디 중복 체크
 		else if(com.equals("/memberIdCheck")) {
 			command = new MemberIdCheckCommand();
 			command.execute(request, response);
 			
 			viewPage += "/memberIdCheck.jsp";
 		}
+		// 회원가입시, 닉네임 중복체크
 		else if(com.equals("/memberNickCheck")) {
 			command = new MemberNickCheckCommand();
 			command.execute(request, response);
 			
 			viewPage += "/memberNickCheck.jsp";
 		}
+		// 회원가입 가입 처리
 		else if(com.equals("/memberJoinOk")) {
 			command = new MemberJoinOkCommand();
 			command.execute(request, response);
 			
 			viewPage = "/include/msg.jsp";
 		}
+		// 로그인 View 화면
 		else if(com.equals("/memberLogin")) {
 			viewPage += "/memberLogin.jsp";
 		}
+		// 로그인 확인처리
 		else if(com.equals("/memberLoginOk")) {
 			command = new MemberLoginOkCommand();
 			command.execute(request, response);
 			
 			viewPage = "/include/msg.jsp";
 		}
+		// 로그인 화면에서 <아이디찾기>를 눌렀을 시 나오는 View화면
 		else if(com.equals("/memberFindMid")) {
 			viewPage += "/memberFindMid.jsp";
 		}
+		// <아이디 찾기> 내용 처리 (ajax)
 		else if(com.equals("/memberFindMidOk")) {
 			command = new MemberFindMidOkCommand();
 			command.execute(request, response);
 			
 			return;
 		}
+		// 로그인 화면에서 <비밀번호 찾기>를 눌렀을 시 나오는 View화면
 		else if(com.equals("/memberFindPwd")) {
 			viewPage += "/memberFindPwd.jsp";
 		}
+		// <비밀번호 찾기> 내용 처리 (ajax)
 		else if(com.equals("/memberFindPwdOk")) {
 			command = new MemberFindPwdOkCommand();
 			command.execute(request, response);
 			
 			return;
 		}
-		else if(level >4) {  //비회원인 경우 (세션이 끊어진 경우) 홈으로 보낸다.
+		//비회원인 경우 (세션이 끊어진 경우) 홈으로 보낸다. 
+		// (맨 위에 안 적은 이유는, 맨 위는 session 연결이 안되어 있어도 들어갈 수 있는 화면들이기 때문이다.)
+		else if(level >4) {  
 			request.getRequestDispatcher("/").forward(request, response);
 		}
+		// 로그아웃 내용 처리하기
 		else if(com.equals("/memberLogoutOk")) {
 			command = new MemberLogoutOkCommand();
 			command.execute(request, response);
 			
 			viewPage = "/include/msg.jsp";
 		}
+		// 로그인 후, 회원전용 메인화면 View 및 보낼 내용 처리하기
 		else if(com.equals("/memberMain")) {
 			command = new MemberMainCommand();
 			command.execute(request, response);
 			viewPage += "/memberMain.jsp";
 		}
+		// 
 		else if(com.equals("/memberPwdCheck")) {
 			viewPage += "/memberPwdCheck.jsp";
 		}

@@ -27,7 +27,7 @@ public class adminController extends HttpServlet{
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
 		
-		// 이런식으로하면 메인화면에 데이터베이스를 불러와 꾸밀 수 있다 (실무에서는 안씀)
+		// 이런식으로하면 메인화면에 데이터베이스를 불러와 꾸밀 수 있다 
 		if(com.equals("/main")) {
 			command = new MainCommand();
 			command.execute(request, response);
@@ -38,15 +38,19 @@ public class adminController extends HttpServlet{
 		else if(level >0) {
 			request.getRequestDispatcher("/").forward(request, response);
 		}
-		else if(com.equals("/adminHeader")) {
-			viewPage += "/adminHeader.jsp";
-		}
+		// 어드민 화면 메인 view에 띄우기
 		else if(com.equals("/adminMain")) {
 			viewPage += "/adminMain.jsp";
 		}
+		// 어드민 화면 헤더 view에 띄우기
+		else if(com.equals("/adminHeader")) {
+			viewPage += "/adminHeader.jsp";
+		}
+		// 어드민 화면 왼쪽(메뉴) view에 띄우기
 		else if(com.equals("/adminLeft")) {
 			viewPage += "/adminLeft.jsp";
 		}
+		// // 어드민 화면 Content 데이터 처리 후 view띄우기
 		else if(com.equals("/adminContent")) {
 			command = new AdminContentCommand();
 			command.execute(request, response);
@@ -61,17 +65,19 @@ public class adminController extends HttpServlet{
 			command.execute(request, response);
 			viewPage += "/member/adminMemberList.jsp";
 		}
+		// 어드민 화면에서 회원별 등급 수정해주기
 		else if(com.equals("/adminMemberLevelChange")) {
 			command = new MemberLevelChangeCommand();
 			command.execute(request, response);
 			return;
 		}
+		// 어드민 화면에서 멤버 전체출력 및 등급별 출력
 		else if(com.equals("/adminMemberLevelSearch")) {
 			command = new MemberLevelSearchCommand();
 			command.execute(request, response);
 			viewPage += "/member/adminMemberList.jsp";
 		}
-		//
+		// 어드민 화면에서 회원 개인별 정보 보기
 		else if(com.equals("/adminMemberInfor")) {
 			command = new AdminMemberInforCommand();
 			command.execute(request, response);

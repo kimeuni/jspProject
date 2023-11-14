@@ -8,6 +8,7 @@
 		for(int i=0; i<cookies.length; i++){
 			if(cookies[i].getName().equals("cMid")){
 				cMid = cookies[i].getValue();
+				pageContext.setAttribute("cMid", cMid);
 			}
 		}
 	}
@@ -38,8 +39,10 @@
 				<tr>
 					<th>아이디</th>
 					<td>
-						<input type="text" name="mid" id="mid" value="<%= cMid %>" autofocus required class="form-control" />
-						<input type="checkbox" name="idCheck" value="save">ID저장
+						<input type="text" name="mid" id="mid" value="${cMid}" autofocus required class="form-control" />
+						<!-- id저장을 해서 쿠키에 값이 있으면..ID저장 체크를 하고, 아니면 ID저장에 체크를 하지 않도록 한다. -->
+						<c:if test="${cMid != null}"><input type="checkbox" name="idCheck" value="save" checked>ID저장</c:if>
+						<c:if test="${cMid == null}"><input type="checkbox" name="idCheck" value="save">ID저장</c:if>
 					</td>
 				</tr>
 				<tr>

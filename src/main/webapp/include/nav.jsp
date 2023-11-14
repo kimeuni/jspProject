@@ -47,7 +47,7 @@
       </li>
       <c:if test="${level <= 4}"> <!-- 회원일 경우만 -->
 	      <li class="nav-item">
-	        <a class="nav-link" href="${ctp}/BoardList">Board</a>
+	        <a class="nav-link" href="boardList.bo">Board</a>
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" href="${ctp}/PdsList">Pds</a>
