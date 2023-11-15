@@ -54,7 +54,13 @@
 				<!-- 수업에서는 submit으로 했지만, button타입으로해서 검사하고 넘길 것.. -->
 					<input type="submit" value="글 수정하기" class="btn btn-success"/>
 					<input type="reset" value="다시입력" class="btn btn-warning"/>
-					<input type="button" value="돌아가기" onclick="location.href='boardContent.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}';" class="btn btn-info"/>
+					<!-- 검색하고 들어왔는지, 전체 리스트에서 들어왔는지 확인 후 주소 보냄. -->
+					<c:if test="${flag != 'search'}">
+						<input type="button" value="돌아가기" onclick="location.href='boardContent.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}';" class="btn btn-info"/>
+					</c:if>
+					<c:if test="${flag == 'search'}">
+						<input type="button" value="돌아가기" onclick="location.href='boardContent.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}&search=${search}&searchString=${searchString}&flag=search';" class="btn btn-info"/>
+					</c:if>
 				</td>
 			</tr>
 		</table>
@@ -65,6 +71,10 @@
 		<!-- hidden으로 pageSu와 PageSize를 넘기지 않으면 boardUpdateOk.bo에서 pageSu와 pageSize의 값을 읽지 못하기 때문에 넘겨야 한다.... -->
 		<input type="hidden" name="pageSu" value="${pageSu}"/>
 		<input type="hidden" name="pageSize" value="${pageSize}"/>
+		<!-- 검색해서 왔을 시 받아온 search,searchString,flag를 hidden타입으로 받는다 / 글수정버튼을 눌렀을 때 submit으로 바로 BoardUpdateOk로 가기 때문에 값을 넘겨주어야 함. -->
+		<input type="hidden" name="search" value="${search}"/>
+		<input type="hidden" name="searchString" value="${searchString}"/>
+		<input type="hidden" name="flag" value="search"/>
 	</form>
 </div>
 <p><br/></p>

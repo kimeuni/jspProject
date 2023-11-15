@@ -63,7 +63,9 @@
 				<td>
 					<!-- 24시간 이내 and 글적은 날짜와 오늘 날짜가 같을 때 == > 시간만 표시 -->
 					<c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) == strToday}">${fn:substring(vo.wDate,10,16)}</c:if>
+					<!-- 24시간 이내 and 글적은 날짜와 오늘 날짜가 다를 때 == > 날짜+시간 표시 -->
 					<c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) != strToday}">${fn:substring(vo.wDate,5,16)}</c:if>
+					<!-- 24시간 이후는 날짜만 보이도록처리 -->
 					<c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
 				</td>
 				<td>${vo.readNum}(${vo.good})</td>

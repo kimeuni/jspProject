@@ -127,9 +127,16 @@
 				<c:if test="${flag == 'search'}"> <!-- 수정페이지에서 Content로 들어오고 나가면 다시 검색했던 리스트로 가야하기 때문에 if문을 통하여 넘겨야한다. 그리고 다시 돌아가려면 search와 searchString의 값을 추가로 가지고 넘어가야한다. (BoardContentCommad에서 값을 넘김) -->
 					<input type="button" value="돌아가기" onclick="location.href='boardSearch.bo?pageSu=${pageSu}&pageSize=${pageSize}&search=${search}&searchString=${searchString}'" class="btn btn-warning"/>
 				</c:if>
-				<c:if test="${sMid == vo.mid}">
+				<c:if test="${sMid == vo.mid}"> <!-- 로그인한 아이디와 게시글에 등록한 사람 id가 같으면 수정버튼 보이기 -->
 				<!-- 수정 후에도, pageSu와 PageSize를 넘겨야 수정후에도 돌아가기 버튼을 누르면 원래 있던 페이지로 돌아갈 수 있다. -->
-					<input type="button" value="수정" onclick="location.href='boardUpdate.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}'" class="btn btn-info"/>
+					<!-- 검색창에서 검색을 했는지 안했는지를 확인하기 위해 flg변수에 search가 넘어왔는지 if문으로 검사 후 주소를 보낸다. -->
+					<c:if test="${flag != 'search'}">
+						<input type="button" value="수정" onclick="location.href='boardUpdate.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}'" class="btn btn-info"/>
+					</c:if>
+					<c:if test="${flag == 'search'}"> <!-- 검색해서 수정에 들어왔을 경우 -->
+						<input type="button" value="수정" onclick="location.href='boardUpdate.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}&flag=search&search=${search}&searchString=${searchString}'" class="btn btn-info"/>
+					</c:if>
+					
 				</c:if>  
 				<c:if test="${sMid == vo.mid || sLevel == 0}">
 				<input type="button" value="삭제" onclick="boardDelete()" class="btn btn-danger"/>

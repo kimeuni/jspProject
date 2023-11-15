@@ -26,6 +26,10 @@ public class BoardUpdateOkCommand implements BoardInterface {
 		int pageSu = request.getParameter("pageSu")== null ? 1 : Integer.parseInt(request.getParameter("pageSu"));
 		int pageSize = request.getParameter("pageSize")== null ? 5 : Integer.parseInt(request.getParameter("pageSize"));
 		
+		String flag = request.getParameter("flag")== null ? "" : request.getParameter("flag");
+		String search = request.getParameter("search")== null ? "" : request.getParameter("search");
+		String searchString = request.getParameter("searchString")== null ? "" : request.getParameter("searchString");
+		
 		BoardVO vo = new BoardVO();
 		
 		vo.setIdx(idx);
@@ -39,7 +43,9 @@ public class BoardUpdateOkCommand implements BoardInterface {
 		
 		request.setAttribute("pageSu", pageSu);
 		request.setAttribute("pageSize", pageSize);
-		
+		request.setAttribute("flag", flag);
+		request.setAttribute("search", search);
+		request.setAttribute("searchString", searchString);
 		
 		BoardDAO dao = new BoardDAO();
 		
@@ -52,7 +58,7 @@ public class BoardUpdateOkCommand implements BoardInterface {
 		else {
 			request.setAttribute("msg", "게시글 수정에 실패하였습니다.");
 		}
-		request.setAttribute("url", "boardContent.bo?idx="+idx + "&pageSu="+pageSu+"&pageSize="+pageSize);
+		request.setAttribute("url", "boardContent.bo?idx="+idx + "&pageSu="+pageSu+"&pageSize="+pageSize+"&flag="+flag+"&search="+search+"&searchString="+searchString);
 	}
 
 }
