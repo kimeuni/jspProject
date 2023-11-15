@@ -9,43 +9,38 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class BoardListCommand implements BoardInterface {
+public class BoardSearchCommand implements BoardInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BoardDAO dao = new BoardDAO();
+		String search = request.getParameter("search")== null ? "" : request.getParameter("search");
+		String searchString = request.getParameter("searchString")== null ? "" : request.getParameter("searchString");
 		
-		// 페이징처리
 		int pageSu = request.getParameter("pageSu")== null ? 1 : Integer.parseInt(request.getParameter("pageSu"));
 		int pageSize = request.getParameter("pageSize")==null ? 5 : Integer.parseInt(request.getParameter("pageSize"));
-		int totRecode = dao.getTotRecCnt();
-		int totPage = (totRecode%pageSize)== 0 ? (totRecode/pageSize) : (totRecode/pageSize)+1;
-		int startIndexNo = (pageSu - 1 ) *pageSize;
-		int startNo = totRecode - startIndexNo;
 		
-		// 블록 페이징 처리
-		int blockSize = 3;
-		int curBlock = (pageSu-1)/blockSize;
-		int lastBlock = (totPage-1)/blockSize;
+		BoardDAO dao = new BoardDAO();
 		
-		ArrayList<BoardVO> vos = dao.getBoardList(startIndexNo,pageSize);
+		ArrayList<BoardVO> vos = dao.getBoardContentSearch(search,searchString);
+		
+		// search에는 값이 title,nickName 등으로 들어가기 때문에.. 
+		String searchTitle = "";
+		if(search.equals("title")) searchTitle = "글제목";
+		else if(search.equals("nickName")) searchTitle = "글쓴이";
+		else searchTitle = "글내용";
 		
 		// 오늘 날짜 확인을 위해서 strToday 변수를 하나 더 넘긴다. (boardList, boardSearchList 글쓴 날짜에서 사용 예정)
 		Date today = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String strToday = sdf.format(today);
 		
-//		System.out.println("strToday : " + strToday);
-		
 		request.setAttribute("vos", vos);
-		request.setAttribute("pageSize", pageSize);
+		request.setAttribute("search", search);
+		request.setAttribute("searchString", searchString);
 		request.setAttribute("pageSu", pageSu);
-		request.setAttribute("totPage", totPage);
-		request.setAttribute("startNo", startNo);
-		request.setAttribute("blockSize", blockSize);
-		request.setAttribute("curBlock", curBlock);
-		request.setAttribute("lastBlock", lastBlock);
+		request.setAttribute("pageSize", pageSize);
+		request.setAttribute("searchTitle", searchTitle);
+		request.setAttribute("searchCount", vos.size());  // jsp에서도 처리 가능하지만, 서블릿을 넘길 때 총 몇건이 넘어갔는지 넘긴다.
 		request.setAttribute("strToday", strToday);
 	}
-
 }

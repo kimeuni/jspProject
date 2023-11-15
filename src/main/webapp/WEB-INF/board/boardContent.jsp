@@ -121,7 +121,12 @@
 		</tr>
 		<tr>
 			<td colspan="4" class="text-center">
-				<input type="button" value="돌아가기" onclick="location.href='boardList.bo?pageSu=${pageSu}&pageSize=${pageSize}'" class="btn btn-warning"/>
+				<c:if test="${flag != 'search'}">
+					<input type="button" value="돌아가기" onclick="location.href='boardList.bo?pageSu=${pageSu}&pageSize=${pageSize}'" class="btn btn-warning"/>
+				</c:if>
+				<c:if test="${flag == 'search'}"> <!-- 수정페이지에서 Content로 들어오고 나가면 다시 검색했던 리스트로 가야하기 때문에 if문을 통하여 넘겨야한다. 그리고 다시 돌아가려면 search와 searchString의 값을 추가로 가지고 넘어가야한다. (BoardContentCommad에서 값을 넘김) -->
+					<input type="button" value="돌아가기" onclick="location.href='boardSearch.bo?pageSu=${pageSu}&pageSize=${pageSize}&search=${search}&searchString=${searchString}'" class="btn btn-warning"/>
+				</c:if>
 				<c:if test="${sMid == vo.mid}">
 				<!-- 수정 후에도, pageSu와 PageSize를 넘겨야 수정후에도 돌아가기 버튼을 누르면 원래 있던 페이지로 돌아갈 수 있다. -->
 					<input type="button" value="수정" onclick="location.href='boardUpdate.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}'" class="btn btn-info"/>
@@ -129,6 +134,17 @@
 				<c:if test="${sMid == vo.mid || sLevel == 0}">
 				<input type="button" value="삭제" onclick="boardDelete()" class="btn btn-danger"/>
 				</c:if>  
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<!-- 이전글/다음글 처리 -->
+	<table class="table table-borderless text-center">
+		<tr>
+			<td>
+				<!-- 비교는 !empty nextVo.title 혹은 nextVo.title != null로 비교하면 된다. -->
+				<c:if test="${nextVo.title != null}"><a href="boardContent.bo?idx=${nextVo.idx}&pageSu=${pageSu}&pageSize=${pageSize}">다음글 : ${nextVo.title}</a><br/></c:if>
+				<c:if test="${preVo.title != null}"><a href="boardContent.bo?idx=${preVo.idx}&pageSu=${pageSu}&pageSize=${pageSize}">이전글 : ${preVo.title}</a><br/></c:if>
 			</td>
 		</tr>
 	</table>

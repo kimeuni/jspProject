@@ -93,6 +93,13 @@ public class boardController extends HttpServlet {
 			
 			viewPage = "/include/msg.jsp";
 		}
+		// 게시판 검색 기능
+		else if(com.equals("/boardSearch")) {
+			command = new BoardSearchCommand();
+			command.execute(request, response);
+			
+			viewPage += "/boardSearchList.jsp";
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

@@ -40,7 +40,8 @@ public class BoardDAO {
 	public ArrayList<BoardVO> getBoardList(int startIndexNo, int pageSize) {
 		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
 		try {
-			sql = "select * from board order by idx desc limit ?,?";
+			// hour_diff 는 timeStampDiff를 담기 위한 변수명..  /  hour를 사용하면 현재시간(now()) - wDate를 뺀 시간이 나온다.. / timeStampDiff를 적은 이유는 게시판에 24시간 안에 적은 글은 new 이미지를 띄우기 위해서이다.)
+			sql = "select *,timeStampDiff(hour,wDate,now()) as hour_diff from board order by idx desc limit ?,?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, startIndexNo);
 			pstmt.setInt(2, pageSize);
@@ -59,6 +60,9 @@ public class BoardDAO {
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setwDate(rs.getString("wDate"));
 				vo.setGood(rs.getInt("good"));
+				
+				vo.setHour_diff(rs.getString("hour_diff"));
+				
 				vos.add(vo);
 			}
 		} catch (SQLException e) {
@@ -236,6 +240,68 @@ public class BoardDAO {
 			pstmtClose();
 		}
 		return res;
+	}
+
+	// 게시판 검색기를 활용한 검색자료 추출처리
+	public ArrayList<BoardVO> getBoardContentSearch(String search, String searchString) {
+		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
+		try {
+			sql ="select *,timeStampDiff(hour,wDate,now()) as hour_diff from board where "+search+" like ? order by idx desc"; // ?는 값으로 보기 때문에, where ? = ? 로 적을 수 없다.. 그래서 "+ search +" 이런식으로 적어줘서 직접 들어온 변수값을 읽을 수 있도록 한다.
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,"%"+ searchString + "%");
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				vo = new BoardVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setTitle(rs.getString("title"));
+				vo.setEmail(rs.getString("email"));
+				vo.setHomePage(rs.getString("homePage"));
+				vo.setContent(rs.getString("content"));
+				vo.setReadNum(rs.getInt("readNum"));
+				vo.setHostIp(rs.getString("hostIp"));
+				vo.setOpenSw(rs.getString("openSw"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setGood(rs.getInt("good"));
+				
+				vo.setHour_diff(rs.getString("hour_diff"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(게시판 검색기)" + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	// 이전글, 다음글 처리 
+	public BoardVO getPreNextSearch(int idx, String str) {
+		vo = new BoardVO();
+		try {
+			//이전글
+			if(str.equals("preVo")) { 
+				sql="select idx,title from board where idx < ? order by idx desc limit 1";
+			}
+			//다음글
+			else { 
+				sql="select idx,title from board where idx > ? order by idx limit 1";
+			}
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setIdx(rs.getInt("idx"));
+				vo.setTitle(rs.getString("title"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(게시판 검색기)" + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
 	}
 	
 }

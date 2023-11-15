@@ -18,11 +18,9 @@ public class BoardGoodCheckCommand implements BoardInterface {
 		
 		BoardDAO dao = new BoardDAO();
 		
-		ArrayList<BoardVO> vos = dao.getBoardList(0, 5);
-		
-		// 좋아요 수 증가처리 (중복허용x)
-		
+		// 좋아요 수 증가처리 (중복허용x / 숙제 / 집에서 한거 / 23-11-14)
 		int res = 0;
+		/*
 		String[] sGoodCheckMid1;
 		String checkMid = "";
 		int checkIdx = 0;
@@ -34,10 +32,10 @@ public class BoardGoodCheckCommand implements BoardInterface {
 			checkIdx = Integer.parseInt(sGoodCheckMid1[1]);
 		}
 		
-		if(sGoodCheckMid.equals("") || sGoodCheckMid == null || checkIdx != idx) {
+		if(sGoodCheckMid.equals("") || sGoodCheckMid == null || checkIdx != idx || !checkMid.equals(mid)) {
 			res = dao.setBoardGoodCheck(idx);
 			session.setAttribute("sGoodCheckMid", mid + "/"+ idx);
-			System.out.println(sGoodCheckMid);
+//			System.out.println(sGoodCheckMid);
 		}
 		else {
 			if(checkMid.equals(mid) && checkIdx == idx) {
@@ -45,6 +43,20 @@ public class BoardGoodCheckCommand implements BoardInterface {
 			}
 			
 		}
+		*/
+		
+		//좋아요 수 증가처리 (중복불허 / 학원 / 23-11-15)  (자세한 설명은 BoardContentCommand.java 참고)
+		ArrayList<String> goodIdxObj = (ArrayList)session.getAttribute("sGoodIdxObj");
+		if(goodIdxObj == null) {
+			goodIdxObj = new ArrayList<String>();
+		}
+		String imsiGoodIdxObj = "boardGood" + idx;
+		if(!goodIdxObj.contains(imsiGoodIdxObj)) {
+			res = dao.setBoardGoodCheck(idx);
+			goodIdxObj.add(imsiGoodIdxObj);
+		}
+		session.setAttribute("sGoodIdxObj", goodIdxObj);
+		
 		
 		response.getWriter().write(res+"");
 		

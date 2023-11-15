@@ -1,21 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>boardList.jsp</title>
+	<title>boardSearchList.jsp</title>
 	<jsp:include page="/include/bs4.jsp"/>
 	<script>
 		'use strict'
-		function pageSizeCheck(){
-			let pageSize = $("#pageSize").val();
-			
-			location.href="boardList.bo?pageSize="+pageSize;
-		}
 	</script>
 </head>
 <body>
@@ -24,21 +19,14 @@
 <div class="container">
 	<table class="table table-borderless m-0">
 		<tr>
-			<td colspan="2"><h2 class="text-center">게 시 판 리 스 트</h2></td>
+			<td colspan="2" class="text-center">
+				<h2 class="text-center">게 시 판 리 스 트</h2>
+				(${searchTitle}(으)로 <font color="red">${searchString}</font>(을)를 검색한 결과 <font color="bule"><b>${searchCount}</b></font>건이 검색되었습니다.)
+			</td>
 		</tr>
 		<tr>
-			<td>
-				<!-- 준회원이 아닐경우 글쓰기 작성 가능 -->
-				<c:if test="${sLevel != 1}"><a href="boardInput.bo" class="btn btn-success btn-sm">글쓰기</a></c:if>
-			</td>
-			<td class="text-right">
-				<select name="pageSize" id="pageSize" onchange="pageSizeCheck()">
-					<option ${pageSize== '3'? 'selected': '' }>3</option>
-					<option ${pageSize== '5'? 'selected': '' }>5</option>
-					<option ${pageSize== '10'? 'selected': '' }>10</option>
-					<option ${pageSize== '15'? 'selected': '' }>15</option>
-					<option ${pageSize== '20'? 'selected': '' }>20</option>
-				</select> 건
+			<td colspan="2">
+				<a href="boardList.bo?pageSu=${pageSu}&pageSize=${pageSize}" class="btn btn-secondary">돌아가기</a>
 			</td>
 		</tr>
 	</table>
@@ -52,16 +40,15 @@
 		</tr>
 		<c:forEach var="vo" items="${vos}" varStatus="st">
 			<tr>
-				<td>${startNo}</td>
+				<td>${searchCount}</td>
 				<!-- 게시글 상세보기를 들어가기 위해서 해당 게시판의 idx(고유번호)를 같이 넘겨야 한다. (상세보기에서 돌아가기 화면에서 원래 있던 화면으로 돌아가기 위해 pageSu와 pageSize를 넘긴다.) -->
 				<td class="text-left">
-					<a href="boardContent.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}">${vo.title}</a>
+					<a href="boardContent.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}&flag=search&search=${search}&searchString=${searchString}">${vo.title}</a>
 					<c:if test="${vo.hour_diff<=24}"><img src = "${ctp}/images/new.gif" /></c:if>
 				</td>
 				<td>${vo.nickName}</td>
 				<!-- new.gif(24시간이내 작성 글)가 표시된 글은 시간만 표시시켜주고, 그렇지 않은 자료는 일자만(년,월,일) 표시시켜주시오. -->
 				<td>
-					<!-- 24시간 이내 and 글적은 날짜와 오늘 날짜가 같을 때 == > 시간만 표시 -->
 					<c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) == strToday}">${fn:substring(vo.wDate,10,16)}</c:if>
 					<c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) != strToday}">${fn:substring(vo.wDate,5,16)}</c:if>
 					<c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
@@ -69,7 +56,7 @@
 				<td>${vo.readNum}(${vo.good})</td>
 			</tr>
 			<tr><td colspan="5" class="m-0 p-0"></td></tr>
-			<c:set var="startNo" value="${startNo-1}" />
+			<c:set var="searchCount" value="${searchCount-1}" />
 		</c:forEach>
 	</table>
 </div>
