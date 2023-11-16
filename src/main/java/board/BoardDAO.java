@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import admin.ComplaintVO;
 import common.GetConn;
 
 public class BoardDAO {
@@ -370,6 +371,55 @@ public class BoardDAO {
 			pstmtClose();
 		}
 		return res;
+	}
+
+	// 신고된 게시판 저장(숙제)
+	public int setComplaintInsert(ComplaintVO vo) {
+		int res = 0;
+		try {
+			sql = "insert into complaint values(default,?,?,?,?,default)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPart());
+			pstmt.setInt(2, vo.getPartIdx());
+			pstmt.setString(3, vo.getCpMid());
+			pstmt.setString(4, vo.getCpContent());
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(신고된 게시판 저장)" + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 신고된 리스트 출력(숙제)
+	public ArrayList<ComplaintVO> getComplaintList() {
+		ArrayList<ComplaintVO> vos = new ArrayList<ComplaintVO>();
+		try {
+			sql="select *,timeStampDiff(hour,cpDate,now()) as hour_diff, datediff(cpDate,now()) as date_diff from complaint order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ComplaintVO cVO = new ComplaintVO();
+				cVO.setIdx(rs.getInt("idx"));
+				cVO.setPart(rs.getString("part"));
+				cVO.setPartIdx(rs.getInt("partIdx"));
+				cVO.setCpMid(rs.getString("cpMid"));
+				cVO.setCpContent(rs.getString("cpContent"));
+				cVO.setCpDate(rs.getString("cpDate"));
+				
+				cVO.setHour_diff(rs.getString("hour_diff"));
+				cVO.setDate_diff(rs.getString("date_diff"));
+				
+				vos.add(cVO);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(신고된 리스트 출력)" + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
 	}
 	
 }

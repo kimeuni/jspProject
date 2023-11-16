@@ -32,6 +32,7 @@
 		<h4>일반관리</h4>
 		<div><a href="adminMemberLevelSearch.ad" target="adminContent">회원리스트</a></div>
 		<div><a href="#" target="adminContent">게시판리스트</a></div>
+		<div><a href="adminComplaintList.ad" target="adminContent">신고 관리</a></div>
 	</div>
 </div>
 </body>

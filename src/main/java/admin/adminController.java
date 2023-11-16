@@ -83,7 +83,12 @@ public class adminController extends HttpServlet{
 			command.execute(request, response);
 			viewPage += "/member/adminMemberInfor.jsp";
 		}
-		
+		// 신고 게시글 관리자메뉴에 리스트 출력 (숙제 2023-11-16)
+		else if(com.equals("/adminComplaintList")) {
+			command = new AdminComplaintListCommand();
+			command.execute(request, response);
+			viewPage += "/adminComplaintList.jsp";
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

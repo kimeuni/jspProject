@@ -114,6 +114,12 @@ public class boardController extends HttpServlet {
 			
 			return;
 		}
+		// 신고 게시글 저장 (숙제 2023-11-16)
+		else if(com.equals("/complaint")) {
+			command = new ComplaintCommand();  
+			command.execute(request, response);
+			return;
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

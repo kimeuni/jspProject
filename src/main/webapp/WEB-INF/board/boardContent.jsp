@@ -17,6 +17,23 @@
 			text-align:center;
 			background-color:#eee;
 		}
+		/* 신고창 */
+		#complaint{
+			position: fixed;
+			top:25%;
+			/* 가운데 정렬 */
+			left: 50%;
+    		transform: translate(-50%, 0);
+			width: 450px;
+			border: 1px solid gray;
+			border-radius: 25px;
+			background-color:#fff;
+		}
+		
+		#cpstyle{
+			text-align:center;
+			padding: 30px;
+		}
 	</style>
 	<script>
 		'use strict'
@@ -129,6 +146,80 @@
 				}
 			});
 		}
+		
+		//게시판 들어왔을 때 신고창 숨기기 및 신고기타사유 적는 곳 숨기기
+		$(function() {
+			$("#complaint").hide();
+			$("#cpWhyOther").hide();
+		});
+		
+		// 신고버튼 눌렀을 시, 신고창 뜨게 하기
+		function cpCheck(){
+			$("#complaint").show();
+		}
+		
+		// "기타"를 선택했을 시, 화면 보이기 혹은 가리기
+		function cpWhyCheck(){
+			let cpWhy = $("#cpWhy").val();
+			if(cpWhy == '기타'){
+				$("#cpWhyOther").show();
+			}
+			else {
+				$("#cpWhyOther").hide();
+			}
+		};
+		
+		// 신고창에서 취소 버튼
+		function cCheck(){
+			
+			$("#complaint").hide();
+			$("#cpWhyOther").hide();
+		}
+		
+		// 신고창 신고하기 버튼
+		function cpCheckOk() {
+			let cpWhy = $("#cpWhy").val();
+			let otherWhy =$("#otherWhy").val();
+			
+			if(cpWhy.trim() == "" ){
+				alert("신고 사유를 선택해주세요.")
+				return false;
+			}
+			else if(cpWhy == "기타" && otherWhy.trim() == ""){
+				alert("신고 사유를 선택해주세요.")
+				$("#otherWhy").focus();
+				return false;
+			}
+			else {
+				let cpWhy = $("#cpWhy").val();
+				let otherWhy = $("#otherWhy").val();
+				
+				let query = {
+					part : "board",
+					partIdx : ${vo.idx},
+					cpMid : "${sMid}",
+					cpContent : cpWhy,
+					cpContOther : otherWhy
+				}
+				$.ajax({
+					url : "complaint.bo",
+					type : "post",
+					data : query,
+					success : function(res){
+						if(res == "1") {
+							alert("신고가 완료되었습니다.")
+							location.reload();
+						}
+						else alert("신고에 실패하였습니다.")
+					},
+					error : function(){
+						alert("전송 오류");
+					}
+				});
+			}
+			
+		}
+		
 	</script>
 </head>
 <body>
@@ -199,7 +290,7 @@
 				<input type="button" value="삭제" onclick="boardDelete()" class="btn btn-danger"/>
 				</c:if>  
 			</td>
-			<td class="text-right" colspan=""><a href="complaint.ad" class="btn btn-danger">신고하기</a></td>
+			<td class="text-right" colspan=""><a href="javascript:cpCheck()" class="btn btn-danger">신고하기</a></td>
 		</tr>
 	</table>
 	<br/>
@@ -258,9 +349,34 @@
 			</tr>
 		</table>
 	</form>
-	
 </div>	
-	
+<!-- 게시글 신고창 -->
+	<div id="complaint">
+		<div style="text-align:center; background-color:#252525; color:#fff; height:50px; line-height:50px;">신고하기</div>
+		<div id="cpstyle">
+			<div>신고항목 : board 게시판</div>
+			<div>신고 게시판 : ${vo.title}  /  고유번호 : ${vo.idx}</div>
+			<div>신고자 : ${sMid}</div>
+			<div>
+				<select name="cpWhy" id="cpWhy" class="form-control" onchange="cpWhyCheck()">
+					<option value="">신고 사유</option>
+					<option value="영리목적/홍보성">영리목적/홍보성</option>
+					<option value="개인 정보 노출">개인 정보 노출</option>
+					<option value="불법 정보">불법 정보</option>
+					<option value="음란성/선정성">음란성/선정성</option>
+					<option value="기타">기타</option>
+				</select>
+			</div>
+			<div id="cpWhyOther" class="mt-2">
+				<hr/>
+				<textarea rows="4" id="otherWhy" class="form-control"></textarea>
+			</div>
+			<div class="text-center mt-3">
+				<a href="javascript:cpCheckOk()" class="btn btn-success">신고하기</a>
+				<a href="javascript:cCheck()" class="btn btn-warning">취소하기</a>
+			</div>
+		</div>
+	</div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp"/>
 </body>

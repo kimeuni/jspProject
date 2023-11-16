@@ -10,3 +10,5 @@ create table complaint (
 	primary key(idx)
 );
 desc complaint;
+
+select *,timeStampDiff(hour,cpDate,now()) as hour_diff, datediff(cpDate,now()) as date_diff from complaint order by idx desc
