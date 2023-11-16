@@ -74,6 +74,61 @@
 				location.href = "baordDelete.bo?idx=${vo.idx}";
 			}
 		}
+		
+		// 댓글 달기 
+		function replyCheck(){
+			let content = $("#content").val();
+			if(content.trim() == ""){
+				alert("댓글을 입력하세요.");
+				$("#content").focus();
+				return false;
+			}
+			// idx, wDate 는 자동으로 들어가기 때문에 값을 안 넘져줘도 된다.
+			let query = {
+				boardIdx : ${vo.idx},
+				mid : '${sMid}',   // mid는 문자이기 때문에 따옴표를 적어줘야함 (아니면 에러나옴)
+				nickName : '${sNickName}',
+				hostIp : '${pageContext.request.remoteAddr}',
+				content : content
+			}
+			$.ajax({
+				url : "boardReplyInput.bo",
+				type : "post",
+				data : query,
+				success : function(res){
+					if(res == "1") {
+						alert("댓글이 입력되었습니다.")
+						location.reload();
+					}
+					else alert("댓글 입력 실패")
+				},
+				error : function(){
+					alert("전송 오류~")
+				}
+			});
+		}
+		
+		// 댓글 삭제하기 (여기서 가져온 idx는 Reply의 고유번호이다.)
+		function replyDelete(idx){
+			let ans = confirm("선택한 댓글을 삭제하시겠습니까?");
+			if(!ans) return false;
+			
+			$.ajax({
+				url : "boardReplyDelete.bo",
+				type : "post",
+				data : {idx : idx},
+				success : function(res){
+					if(res ="1"){
+						alert("댓글이 삭제되었습니다.")
+						location.reload();					
+					}
+					else alert("댓글 삭제 실패.")
+				},
+				error : function(){
+					alert("전송오류")
+				}
+			});
+		}
 	</script>
 </head>
 <body>
@@ -113,14 +168,16 @@
 				<c:if test="${!empty vo.homePage && (fn: indexOf(vo.homePage,'http://')!= -1 || fn: indexOf(vo.homePage,'https://')!=-1) && fn:length(vo.homePage) > 10 }"><a href="${vo.homePage }" target="_blank">${vo.homePage }</a></c:if>
 			</td>
 			<th>좋아요</th>
-			<td><font color="red"><a href="javascript:goodCheck()">❤</a></font>(${vo.good }) / <a href="javascript:goodCheckPlus()">👍</a> <a href="javascript:goodCheckMinus()">👎</a> <td>
+			<td><font color="red"><a href="javascript:goodCheck()">❤</a></font>(${vo.good }) / <a href="javascript:goodCheckPlus()">👍</a> <a href="javascript:goodCheckMinus()">👎</a> </td>
 		</tr>
 		<tr>
 			<th>글내용</th>
 			<td colspan="3" style="height:220px;">${fn:replace(vo.content,newLine,"<br/>")}</td>
 		</tr>
+	</table>
+	<table class="table table-borderless">
 		<tr>
-			<td colspan="4" class="text-center">
+			<td class="text-left">
 				<c:if test="${flag != 'search'}">
 					<input type="button" value="돌아가기" onclick="location.href='boardList.bo?pageSu=${pageSu}&pageSize=${pageSize}'" class="btn btn-warning"/>
 				</c:if>
@@ -142,6 +199,7 @@
 				<input type="button" value="삭제" onclick="boardDelete()" class="btn btn-danger"/>
 				</c:if>  
 			</td>
+			<td class="text-right" colspan=""><a href="complaint.ad" class="btn btn-danger">신고하기</a></td>
 		</tr>
 	</table>
 	<br/>
@@ -156,6 +214,53 @@
 		</tr>
 	</table>
 </div>
+
+<!-- 댓글 처리 -->
+<div class="container">
+	<!-- 댓글 리스트 보여주기 -->
+	<table class="table table-hover text-center">
+		<tr>
+			<th >작성자</th>
+			<th class="text-left">댓글내용</th>
+			<th>작성일자</th>
+			<th>접속IP</th>
+		</tr>
+		<c:forEach var="replyVO" items="${replyVOS}" varStatus="st">
+			<tr>
+				<td>${replyVO.nickName}
+					<c:if test="${replyVO.mid == sMid || sLevel == 0 }">
+						(<a href="javascript:replyDelete(${replyVO.idx})" >x</a>) <!-- reply의 고유번호(idx)를 넘겨야 해당  -->
+					</c:if>
+				</td>
+				<td class="text-left">${fn: replace(replyVO.content,newLine,"<br/>")}</td>
+				<td>${fn: substring(replyVO.wDate,0,10)}</td>
+				<td>${replyVO.hostIp}</td>
+			</tr>
+		</c:forEach>
+		<tr><td colspan="4" class="m-0 p-0"></td></tr>
+	</table>
+	<br/>
+	
+	<!-- 댓글 입력창 -->
+	<form name = "replyForm">
+		<table class="table table-center">
+			<tr>
+				<td style="width:85%;" class="text-left">
+					글내용 : 
+					<textarea rows="4" name="content" id="content" class="form-control"></textarea>
+				</td>
+				<td style="width:15%;">
+					<br/>
+					<p style="font-size:13px;">작성자 : ${sNickName}</p>
+					<p> <input type="button" value="댓글달기" onclick="replyCheck()" class="btn btn-info btn-sm"/></p>
+					
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+</div>	
+	
 <p><br/></p>
 <jsp:include page="/include/footer.jsp"/>
 </body>

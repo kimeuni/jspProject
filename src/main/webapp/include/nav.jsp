@@ -69,6 +69,16 @@
 	      </li>
 	      <li class="nav-item ml mr-2">
 	        <div class="dropdown">
+	        <!-- 2023-11-16 파일 업로드 수업(싱글파일업로드1) -->
+			    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Study2</button>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item" href="fileUpload1.st">싱글파일업로드1</a>
+			      <a class="dropdown-item" href="fileUpload2.st">싱글파일업로드2</a>
+			    </div>
+			  </div>
+	      </li>
+	      <li class="nav-item ml mr-2">
+	        <div class="dropdown">
 			    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">MyPage</button>
 			    <div class="dropdown-menu">
 			      <a class="dropdown-item" href="memberMain.mem">회원메인방</a>

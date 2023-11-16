@@ -92,6 +92,11 @@ public class BoardContentCommand implements BoardInterface {
 		
 		request.setAttribute("preVo", preVo);
 		request.setAttribute("nextVo", nextVo);
+		
+		// 댓글 처리  (원본글의 idx를 가져간다)
+		ArrayList<BoardReplyVO> replyVOS = dao.getBoardReply(idx);
+		
+		request.setAttribute("replyVOS", replyVOS);
 	}
 
 }

@@ -56,17 +56,22 @@
 				<!-- 게시글 상세보기를 들어가기 위해서 해당 게시판의 idx(고유번호)를 같이 넘겨야 한다. (상세보기에서 돌아가기 화면에서 원래 있던 화면으로 돌아가기 위해 pageSu와 pageSize를 넘긴다.) -->
 				<td class="text-left">
 					<a href="boardContent.bo?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}">${vo.title}</a>
-					<c:if test="${vo.hour_diff<=24}"><img src = "${ctp}/images/new.gif" /></c:if>
+					<c:if test="${vo.hour_diff<=24}"><img src = "${ctp}/images/new.gif" /></c:if> 
+					<c:if test="${vo.replyCnt != 0 }">(${vo.replyCnt})</c:if> <!-- 해당 게시글의 댓글 수 출력 -->
 				</td>
 				<td>${vo.nickName}</td>
 				<!-- new.gif(24시간이내 작성 글)가 표시된 글은 시간만 표시시켜주고, 그렇지 않은 자료는 일자만(년,월,일) 표시시켜주시오. -->
 				<td>
+					<!-- sql문을 활용한 날짜 비교 -->
+					<c:if test="${vo.hour_diff<=24}">${vo.date_diff == 0 ? fn:substring(vo.wDate,11,19) : fn:substring(vo.wDate,0,16)}</c:if>
+					
 					<!-- 24시간 이내 and 글적은 날짜와 오늘 날짜가 같을 때 == > 시간만 표시 -->
-					<c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) == strToday}">${fn:substring(vo.wDate,10,16)}</c:if>
+					<%-- <c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) == strToday}">${fn:substring(vo.wDate,10,16)}</c:if> --%>
 					<!-- 24시간 이내 and 글적은 날짜와 오늘 날짜가 다를 때 == > 날짜+시간 표시 -->
-					<c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) != strToday}">${fn:substring(vo.wDate,5,16)}</c:if>
+					<%-- <c:if test="${vo.hour_diff<=24 && fn:substring(vo.wDate,0,10) != strToday}">${fn:substring(vo.wDate,5,16)}</c:if> --%>
 					<!-- 24시간 이후는 날짜만 보이도록처리 -->
 					<c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
+				
 				</td>
 				<td>${vo.readNum}(${vo.good})</td>
 			</tr>

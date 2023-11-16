@@ -100,6 +100,20 @@ public class boardController extends HttpServlet {
 			
 			viewPage += "/boardSearchList.jsp";
 		}
+		// 댓글 글 작성 DB저장 처리
+		else if(com.equals("/boardReplyInput")) {
+			command = new BoardReplyInputCommand();
+			command.execute(request, response);
+			
+			return;
+		}
+		// 작성된 댓글 삭제처리
+		else if(com.equals("/boardReplyDelete")) {
+			command = new BoardReplyDeleteCommand();
+			command.execute(request, response);
+			
+			return;
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

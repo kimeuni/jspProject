@@ -41,7 +41,9 @@ public class BoardDAO {
 		ArrayList<BoardVO> vos = new ArrayList<BoardVO>();
 		try {
 			// hour_diff 는 timeStampDiff를 담기 위한 변수명..  /  hour를 사용하면 현재시간(now()) - wDate를 뺀 시간이 나온다.. / timeStampDiff를 적은 이유는 게시판에 24시간 안에 적은 글은 new 이미지를 띄우기 위해서이다.)
-			sql = "select *,timeStampDiff(hour,wDate,now()) as hour_diff from board order by idx desc limit ?,?";
+			sql = "select *,timeStampDiff(hour,wDate,now()) as hour_diff, datediff(wDate,now()) as date_diff, "
+					+ "(select count(*) from boardReply where boardIdx=board.idx) as replyCnt "
+					+ "from board order by idx desc limit ?,?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, startIndexNo);
 			pstmt.setInt(2, pageSize);
@@ -62,6 +64,8 @@ public class BoardDAO {
 				vo.setGood(rs.getInt("good"));
 				
 				vo.setHour_diff(rs.getString("hour_diff"));
+				vo.setDate_diff(rs.getString("date_diff"));
+				vo.setReplyCnt(rs.getInt("replyCnt"));;
 				
 				vos.add(vo);
 			}
@@ -302,6 +306,70 @@ public class BoardDAO {
 			rsClose();
 		}
 		return vo;
+	}
+
+	// 댓글 읽어오기 (원본글 idx에 해당하는 댓글을 읽어온다.)
+	public ArrayList<BoardReplyVO> getBoardReply(int idx) {
+		ArrayList<BoardReplyVO> replyVOS = new ArrayList<BoardReplyVO>();
+		try {
+			// BoardListCommand.java에서 board의 idx를 넘겼는데.. board의 idx는 boardReply의 boardIdx와 같기 때문에 해당 해당 게시글의 댓글을 읽어올 수 있음
+			sql = "select * from boardReply where boardIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardReplyVO replyVO = new BoardReplyVO();
+				replyVO.setIdx(rs.getInt("idx"));
+				replyVO.setBoardIdx(rs.getInt("boardIdx"));
+				replyVO.setMid(rs.getString("mid"));
+				replyVO.setNickName(rs.getString("nickName"));
+				replyVO.setwDate(rs.getString("wDate"));
+				replyVO.setHostIp(rs.getString("hostIp"));
+				replyVO.setContent(rs.getString("content"));
+				replyVOS.add(replyVO);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(댓글 읽어오기)" + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return replyVOS;
+	}
+
+	// 댓글 작성 후 DB 저장처리
+	public int setReplyInputOk(BoardReplyVO replyVO) {
+		int res = 0;
+		try {
+			sql = "insert into boardReply values(default,?,?,?,default,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, replyVO.getBoardIdx());
+			pstmt.setString(2, replyVO.getMid());
+			pstmt.setString(3, replyVO.getNickName());
+			pstmt.setString(4, replyVO.getHostIp());
+			pstmt.setString(5, replyVO.getContent());
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류(댓글 작성 후 DB 저장처리)" + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 댓글 삭제 처리
+	public int getBoardReplyDeleteOk(int idx) {
+		int res = 0;
+		try {
+			sql = "delete from boardReply where idx=?";
+			pstmt =conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류( 댓글 삭제 처리)" + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
 	}
 	
 }
