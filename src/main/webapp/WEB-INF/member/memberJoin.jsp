@@ -97,6 +97,23 @@
     		tel = tel1 + "-" + tel2 + "-" + tel3;
     		submitFlag = 1;
     	}
+		
+  		// 파일 유효성 검사
+  		let fName = document.getElementById("file").value;
+  		let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+  		let maxSize = 1024*1024*5;
+  		let fileSize = document.getElementById("file").files[0].size;
+  		
+  		// 업로드 가능한 확장명 파일
+  		if(ext != 'jpg' && ext != 'gif'&& ext != 'png'){
+			alert("업로드 가능한 파일은 'jpg/gif/png'만 가능합니다.")
+			return false;
+		}
+		// 파일 용량 체크
+		else if(fileSize > maxSize) {
+			alert("업로드할 파일의 최대용량은 5MByte입니다.");
+			return false;
+		}
     	
     	// 전송전에 '주소'를 하나로 묶어소 전송처리 준비한다.
     	let postcode = myform.postcode.value + " ";
@@ -104,7 +121,7 @@
     	let detailAddress = myform.detailAddress.value + " ";
     	let extraAddress = myform.extraAddress.value + " ";
   		myform.address.value = postcode + "/" + roadAddress + "/" + detailAddress + "/" + extraAddress + "/";
-    	
+  		
     	// 전송전에 모든 체크가 끝나면 submitFlag가 1로 되게된다. 이때 값들을 서버로 전송처리한다.
     	if(submitFlag == 1) {
     		if(idCheckSw == 0) {
@@ -160,13 +177,28 @@
     	}
     }
     
+    // 선택한 이미지 화면에 출력
+    function imgCheck(e){
+    	if(e.files && e.files[0]){
+    		let reader = new FileReader();
+			reader.onload = function(e){
+				document.getElementById("demo").src = e.target.result;
+			}
+			reader.readAsDataURL(e.files[0]);
+		}
+		else {
+			document.getElementById("demo").src = "";
+		}
+    }
+    
   </script>
 </head>
 <body>
 <jsp:include page="/include/header.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" action="${ctp}/memberJoinOk.mem" class="was-validated">
+  <%-- <form name="myform" method="post" action="${ctp}/memberJoinOk.mem" class="was-validated"> --%>
+  <form name="myform" method="post" action="${ctp}/memberJoinOk.mem" class="was-validated" enctype="multipart/form-data">
     <h2>회 원 가 입</h2>
     <br/>
     <div class="form-group">
@@ -337,7 +369,8 @@
     </div>
     <div  class="form-group">
       회원 사진(파일용량:2MByte이내) :
-      <input type="file" name="fName" id="file" class="form-control-file border"/>
+      <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control-file border"/>
+      <img id="demo" width="250px" class="mt-3"/>
     </div>
     <button type="button" class="btn btn-secondary" onclick="fCheck()">회원가입</button> &nbsp;
     <button type="reset" class="btn btn-secondary">다시작성</button> &nbsp;

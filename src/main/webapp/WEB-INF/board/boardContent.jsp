@@ -171,7 +171,6 @@
 		
 		// 신고창에서 취소 버튼
 		function cCheck(){
-			
 			$("#complaint").hide();
 			$("#cpWhyOther").hide();
 		}
