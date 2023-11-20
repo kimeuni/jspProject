@@ -35,8 +35,11 @@ public class MemberJoinOkCommand implements memberInterface {
 		int maxSize = 1024*1024*5;
 		String encoding = "UTF-8";
 		
-		// 사진 파일에 저장
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath,maxSize,encoding,new DefaultFileRenamePolicy());
+		
+		multipartRequest.getOriginalFileName("fName"); //오리지널 이름
+		String  filesystemName =multipartRequest.getFilesystemName("fName")== null ? "noimage.jpg" : multipartRequest.getFilesystemName("fName"); // 서버 파일 이름
+		// 사진 파일에 저장
 		
 		// request가 아닌, multipartRequest로 적어주어야 넘긴 값을 받을 수 있음 (enctype="multipart/form-data" 이걸 사용하여 request로 적으면 값을 가져올 수 없음.)
 		String mid = multipartRequest.getParameter("mid")== null ? "" : multipartRequest.getParameter("mid");
@@ -53,8 +56,6 @@ public class MemberJoinOkCommand implements memberInterface {
 		String content = multipartRequest.getParameter("content")== null ? "" : multipartRequest.getParameter("content");
 		String userInfor = multipartRequest.getParameter("userInfor")== null ? "" : multipartRequest.getParameter("userInfor");
 		
-		multipartRequest.getOriginalFileName("fName"); //오리지널 이름
-		String  filesystemName =multipartRequest.getFilesystemName("fName")== null ? "noimage.jpg" : multipartRequest.getFilesystemName("fName"); // 서버 파일 이름
 		
 		// 취미 전송에 대한 처리(여러개가 올 수 있기에 배열로 처리)
 		String[] hobbys = multipartRequest.getParameterValues("hobby");

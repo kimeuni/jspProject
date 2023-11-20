@@ -23,7 +23,7 @@ public class FileUpload3OkCommand implements StudyInterface {
 		// 파일 업로드 처리... (객체가 생성되면서 바로 파일이 업로드 처리된다.)
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath,maxSize,encoding, new DefaultFileRenamePolicy());
 		
-		// 업로드된 파일의 정보를 추출해보자...  / 
+		// 업로드된 파일의 정보를 추출해보자...  /   Enumeration : 여러개 파일 넣을 시 적음
 		Enumeration fileNames = multipartRequest.getFileNames(); // getFileNames(): 이미지 여러개 넣었을 때 처리 가능
 		String file = "";
 		String originalFileName = "";

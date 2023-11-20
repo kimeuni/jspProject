@@ -99,21 +99,24 @@
     	}
 		
   		// 파일 유효성 검사
+  		// 전송전에 파일에 관한 사항들을 체크한다.
   		let fName = document.getElementById("file").value;
-  		let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
-  		let maxSize = 1024*1024*5;
-  		let fileSize = document.getElementById("file").files[0].size;
   		
-  		// 업로드 가능한 확장명 파일
-  		if(ext != 'jpg' && ext != 'gif'&& ext != 'png'){
-			alert("업로드 가능한 파일은 'jpg/gif/png'만 가능합니다.")
-			return false;
-		}
-		// 파일 용량 체크
-		else if(fileSize > maxSize) {
-			alert("업로드할 파일의 최대용량은 5MByte입니다.");
-			return false;
-		}
+  		if(fName.trim() != "") {
+	    	let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+	    	let maxSize = 1024 * 1024 * 5;
+	    	let fileSize = document.getElementById("file").files[0].size;
+	  		// 업로드 가능한 확장명 파일
+	  		if(ext != 'jpg' && ext != 'gif'&& ext != 'png'){
+				alert("업로드 가능한 파일은 'jpg/gif/png'만 가능합니다.")
+				return false;
+			}
+			// 파일 용량 체크
+			else if(fileSize > maxSize) {
+				alert("업로드할 파일의 최대용량은 5MByte입니다.");
+				return false;
+			}
+  		}
     	
     	// 전송전에 '주소'를 하나로 묶어소 전송처리 준비한다.
     	let postcode = myform.postcode.value + " ";

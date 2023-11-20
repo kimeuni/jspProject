@@ -85,6 +85,9 @@ select idx, (select count(*) from boardReply where boardIdx=11) as replyCnt from
 -- 부모글(원본 게시글) 모두 출력 및 부모글에 해당하는 댓글 수 출력.
 select *, (select count(*) from boardReply where boardIdx=11) as replyCnt from board where idx=11;
 
+
+select *,select count(*) from boardReply ;
+
 /*------------------------------------------------------------------------------------------------------*/
 
 

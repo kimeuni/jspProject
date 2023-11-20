@@ -50,8 +50,8 @@
 	        <a class="nav-link" href="boardList.bo">Board</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="${ctp}/PdsList">Pds</a>
-	      </li>    
+	        <c:if test="${level != 1}"><a class="nav-link" href="pdsList.pds">Pds</a> </c:if>    
+	      </li>
 	      <li class="nav-item ml mr-2">
 	        <div class="dropdown">
 			    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Study1</button>
