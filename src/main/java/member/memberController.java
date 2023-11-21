@@ -157,6 +157,13 @@ public class memberController extends HttpServlet{
 			
 			viewPage += "/mInfor.jsp";
 		}
+		// DB 실시간 채팅처리 (MemberMain화면에서 / 23-11-21(학원))
+		else if(com.equals("/memberMassageInput")) {
+			command = new MemberMassageInputCommand();
+			command.execute(request, response);
+			
+			return;
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

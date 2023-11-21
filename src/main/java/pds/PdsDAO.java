@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import admin.ComplaintVO;
+import admin.review.ReviewVO;
 import common.GetConn;
 
 public class PdsDAO {
@@ -40,6 +41,7 @@ public class PdsDAO {
 	// 자료실 전체(part) 리스트 (+ 글 올린지 얼마나 지났는지 "시간" 및 "날짜"체크)
 	public ArrayList<PdsVO> getPdsList(String part, int pageSize, int startIndexNo) {
 		ArrayList<PdsVO> vos = new ArrayList<PdsVO>();
+
 		try {
 			if(part.equals("전체")) {
 				sql ="select *,datediff(fDate,now()) as day_diff, timestampdiff(hour,fDate,now()) as hour_diff from pds order by idx desc limit ?,?";
@@ -55,6 +57,7 @@ public class PdsDAO {
 				pstmt.setInt(3, pageSize);
 			}
 			rs = pstmt.executeQuery();
+			
 			while(rs.next()) {
 				vo = new PdsVO();
 				vo.setIdx(rs.getInt("idx"));
@@ -72,6 +75,12 @@ public class PdsDAO {
 				vo.setContent(rs.getString("content"));
 				vo.setHostIp(rs.getString("hostIp"));
 				
+//				System.out.println("part : " + part);
+				// 타입확인
+//				if(part instanceof String) {
+//					System.out.println(" String");
+//				}
+
 				vo.setDay_diff(rs.getInt("day_diff"));
 				vo.setHour_diff(rs.getInt("hour_diff"));
 				
@@ -201,6 +210,36 @@ public class PdsDAO {
 			rsClose();
 		}
 		return totRecCnt;
+	}
+
+	// 리뷰 내역 리스트 가져오기
+	public ArrayList<ReviewVO> getReViewList(int idx, String part) {
+		ArrayList<ReviewVO> rVOS = new ArrayList<ReviewVO>();
+		try {
+			sql ="select * from review where partIdx=? and part=? order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.setString(2, part);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ReviewVO rVO = new ReviewVO();
+				rVO.setIdx(rs.getInt("idx"));
+				rVO.setPart(rs.getString("part"));
+				rVO.setPartIdx(rs.getInt("partIdx"));
+				rVO.setMid(rs.getString("mid"));
+				rVO.setStar(rs.getInt("star"));
+				rVO.setContent(rs.getString("content"));
+				rVO.setrDate(rs.getString("rDate"));
+				
+				rVOS.add(rVO);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println("sql오류(리뷰 내역 리스트 가져오기) : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return rVOS;
 	}
 
 	

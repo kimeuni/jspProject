@@ -61,6 +61,12 @@
 				}
 			});
 		}
+		
+		function pageSizeCheck(){
+			let pageSize = document.getElementById("pageSize").value;
+			
+			location.href="pdsList.pds?pageSize="+pageSize+"&part=${part}";
+		}
 	</script>
 </head>
 <body>
@@ -74,21 +80,21 @@
 			<td style="width:20%" class="text-left">
 				<form name="partForm">
 					<select name="part" id="part" onchange="partCheck()" class="form-control">
-						<option ${part =="전체" ? "selected" : "" }>전체</option>
-						<option ${part =="학습" ? "selected" : "" }>학습</option>
-						<option ${part =="여행" ? "selected" : "" }>여행</option>
-						<option ${part =="음식" ? "selected" : "" }>음식</option>
-						<option ${part =="기타" ? "selected" : "" }>기타</option>
+						<option ${part == "전체" ? "selected" : "" }>전체</option>
+						<option ${part == "학습" ? "selected" : "" }>학습</option>
+						<option ${part == "여행" ? "selected" : "" }>여행</option>
+						<option ${part == "음식" ? "selected" : "" }>음식</option>
+						<option ${part == "기타" ? "selected" : "" }>기타</option>
 					</select>
 				</form>
 			</td>
 			<td style="width:10%" class="text-left">
 				<select name="pageSize" id="pageSize" onchange="pageSizeCheck()" class="form-control">
-					<option ${part =="3" ? "selected" : "" }>3</option>
-					<option ${part =="5" ? "selected" : "" }>5</option>
-					<option ${part =="10" ? "selected" : "" }>10</option>
-					<option ${part =="15" ? "selected" : "" }>15</option>
-					<option ${part =="20" ? "selected" : "" }>20</option>
+					<option ${pageSize ==3 ? "selected" : "" }>3</option>
+					<option ${pageSize ==5 ? "selected" : "" }>5</option>
+					<option ${pageSize ==10 ? "selected" : "" }>10</option>
+					<option ${pageSize ==15 ? "selected" : "" }>15</option>
+					<option ${pageSize ==20 ? "selected" : "" }>20</option>
 				</select>건
 			</td>
 			<td class="text-right">
@@ -111,8 +117,9 @@
 		<c:forEach var="vo" items="${vos}" varStatus="st">
 			<tr>
 				<td>${pdsCnt}</td>
-				<c:if test="${vo.hour_diff <=24}"><td>${vo.title }<img src="${ctp}/images/new.gif"/></td></c:if>
-				<c:if test="${vo.hour_diff >24}"><td>${vo.title }</td></c:if>
+				<td><a href="pdsContent.pds?idx=${vo.idx}&pageSu=${pageSu}&pageSize=${pageSize}&part=${part}">${vo.title }</a>
+					<c:if test="${vo.hour_diff <=24}"><img src="${ctp}/images/new.gif"/></c:if>
+				</td>
 				<td>${vo.nickName }</td>
 				<!-- 날짜 처리 -->
 				<c:if test="${vo.hour_diff > 24}"><td>${fn:substring(vo.fDate,0,10)}</td></c:if>
@@ -129,14 +136,25 @@
 					(<fmt:formatNumber value="${vo.fSize/1024}" pattern="#,##0"/> KByte) 
 				</td>
 				<td>${vo.downNum }</td>
+				<td>
 				<c:if test="${vo.mid == sMid || sLevel == 0}">
-					<td><a href="javascript:pdsDeleteCheck('${vo.idx}','${vo.fSName}')" class="btn btn-danger btn-sm">삭제</a></td> <!-- 숫자,문자 같이 넘어가면 에러날 수 있기 때문에 둘다 문자로 넘기는게 좋다. -->
+					<a href="javascript:pdsDeleteCheck('${vo.idx}','${vo.fSName}')" class="badge badge-danger">삭제</a> <!-- 숫자,문자 같이 넘어가면 에러날 수 있기 때문에 둘다 문자로 넘기는게 좋다. -->
 				</c:if>
+				<br/>
+				<a href="pdsTotalDown.pds?idx=${vo.idx}" class="badge badge-primary">전체다운</a>
+				</td>
 			</tr>
 			<c:set var="pdsCnt" value="${pdsCnt-1}"/>
 			<tr><td colspan="8" class="m-0 p-0"></td></tr>
 		</c:forEach>
 	</table>
+	<!-- 페이징처리 -->
+	<div style="text-align:center;">
+		<c:if test="${pageSu > 1}"><a href="pdsList.pds?pageSu=1&pageSize=${pageSize}"><<</a> </c:if>
+		<c:if test="${pageSu > 1}"><a href="pdsList.pds?pageSu=${pageSu-1}&pageSize=${pageSize}"><</a> </c:if>
+		<c:if test="${pageSu != totPage}"><a href="pdsList.pds?pageSu=${pageSu+1}&pageSize=${pageSize}">></a> </c:if>
+		<c:if test="${pageSu != totPage}"><a href="pdsList.pds?pageSu=${totPage}&pageSize=${pageSize}">>></a> </c:if>
+	</div>
 </div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp"/>

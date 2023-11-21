@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import admin.member.MemberLevelChangeCommand;
 import admin.member.MemberLevelSearchCommand;
+import admin.review.ReviewInputCommand;
 import member.MemberListCommand;
 
 @SuppressWarnings("serial")
@@ -33,6 +34,12 @@ public class adminController extends HttpServlet{
 			command.execute(request, response);
 			
 			viewPage = "/WEB-INF/main/main.jsp";
+		}
+		// 리뷰 등록
+		else if(com.equals("/reviewInput")) {
+			command = new ReviewInputCommand();
+			command.execute(request, response);
+			return;
 		}
 		// 관리자가 아니면 들어오지 못하도록 처리..
 		else if(level >0) {
@@ -89,6 +96,7 @@ public class adminController extends HttpServlet{
 			command.execute(request, response);
 			viewPage += "/adminComplaintList.jsp";
 		}
+		
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

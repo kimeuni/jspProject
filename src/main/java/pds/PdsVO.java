@@ -16,6 +16,7 @@ public class PdsVO {
 	private String content;
 	private String hostIp;
 	
+	// 새글 처리시(24시간 이내) 날짜체크변수와 시간체크변수 선언
 	private int day_diff;
 	private int hour_diff;
 	

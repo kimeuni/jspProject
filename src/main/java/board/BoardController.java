@@ -31,7 +31,6 @@ public class BoardController extends HttpServlet {
 		else if(com.equals("/boardList")) {
 			command = new BoardListCommand();
 			command.execute(request, response);
-			
 			viewPage += "/boardList.jsp";
 		}
 		// 게시판에 <글쓰기> 누를 시, 들어가는 View 화면

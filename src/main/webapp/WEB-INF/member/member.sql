@@ -40,3 +40,15 @@ select * from member;
 
 select *, timestampdiff(day,lastDate,now()) as deleteDiff from member order by idx desc limit 0,5  /* now()(현재 날짜)에서 lastDate(최종접속일)을 뺀 값이 나온다.. */
 /* deleteDiff : 가상의 필드 (VO에 추가해줌) */
+
+
+/* 실시간 DB채팅 테이블 설계 */
+create table memberChat(
+	idx int not null auto_increment primary key,
+	nickName varchar(30) not null,
+	chat varchar(100) not null
+);
+
+desc memberChat;
+
+select * from memberChat order by idx desc limit 50;

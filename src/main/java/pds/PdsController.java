@@ -52,6 +52,18 @@ public class PdsController extends HttpServlet {
 			command.execute(request, response);
 			return;
 		}
+		// 자료실 게시글 자세히 보기(23-11-21 (학원))
+		else if(com.equals("/pdsContent")) {
+			command = new pdsContentCommand();
+			command.execute(request, response);
+			viewPage += "/pdsContent.jsp";
+		}
+		// 자료실 전체 다운로드 처리 (23-11-21 (학원))
+		else if(com.equals("/pdsTotalDown")) {
+			command = new PdsTotalDownCommand();
+			command.execute(request, response);
+			return;
+		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }
