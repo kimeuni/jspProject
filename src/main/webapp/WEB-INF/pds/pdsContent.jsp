@@ -11,6 +11,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>pdsContent.jsp</title>
 	<jsp:include page="/include/bs4.jsp"/>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 	<script>
 		'use strict'
 		//다운로드 수 증가시키기
@@ -58,6 +59,20 @@
 				}
 			});
 		}
+		// 화살표클릭시 화면 처음으로 부드럽게 이동시키기
+		$(window).scroll(function(){ //윈도우이에 스크롤이 일어났을 때
+			if($(this).scrollTop() > 100) { //현재 스크롤이 100px 아래로 갈시
+				$("#topBtn").addClass("on");  //화살표 추가
+			}
+			else {
+				$("#topBtn").removeClass("on");  //아닐 시 삭제
+			}
+			$("#topBtn").click(function(){
+				window.scrollTo({top:0,behavior:"smooth"}) //현재 페이지에서 특정 위치로 스크롤이동시키는 명령어  //만약 topBtn을 클릭했을 시 스크롤 위치 0 .. 그리고 부드럽게 올라가기
+			});
+		});  
+		
+		
 	</script>
 	<style>
 		th{
@@ -84,6 +99,12 @@
 		}
 		#starForm input[type="radio"]:checked ~ label {
 			text-shadow:0 0 0 rgba(250,200,0,0.95);
+		}
+		
+		#topBtn{
+		    position: fixed;
+		    bottom: 50px;
+		    right: 100px;
 		}
 	</style>
 </head>
@@ -186,6 +207,9 @@
 	  </div>
 	  <hr/>
 	</c:forEach>
+</div>
+<div>
+	<h6 id="topBtn" class="text-right"><i class='far fa-arrow-alt-circle-up' style='font-size:36px'></i></h6>
 </div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp"/>

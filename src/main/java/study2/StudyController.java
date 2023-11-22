@@ -94,10 +94,23 @@ public class StudyController extends HttpServlet {
 			command.execute(request, response);
 			return;
 		}
+		// 다운로드 이동 (학원 :20231117)
 		else if(com.equals("/javaFileDownload")) {
 			command = new JavaFileDownloadCommand();  
 			command.execute(request, response);
 			return;
+		}
+		// 캘린더(달력) (학원 :20231122)
+		else if(com.equals("/calendar1")) {
+			command = new Calendar1Command();  
+			command.execute(request, response);
+			viewPage += "/calendar/calendar1.jsp";
+		}
+		// 캘린더(달력) (학원 :20231122)
+		else if(com.equals("/calendar2")) {
+			command = new Calendar2Command();  
+			command.execute(request, response);
+			viewPage += "/calendar/calendar2.jsp";
 		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 		

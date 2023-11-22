@@ -77,6 +77,8 @@
 			      <a class="dropdown-item" href="fileUpload3.st">멀티파일업로드1</a>
 			      <a class="dropdown-item" href="fileUpload4.st">멀티파일업로드2</a>
 			      <a class="dropdown-item" href="fileDownload.st">다운로드이동</a>
+			      <a class="dropdown-item" href="calendar1.st">달력연습1</a>
+			      <a class="dropdown-item" href="calendar2.st">달력연습2</a>
 			    </div>
 			  </div>
 	      </li>
@@ -85,6 +87,7 @@
 			    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">MyPage</button>
 			    <div class="dropdown-menu">
 			      <a class="dropdown-item" href="memberMain.mem">회원메인방</a>
+			      <a class="dropdown-item" href="schedule.sc">일정관리</a>
 			      <a class="dropdown-item" href="memberPwdCheck.mem">회원정보수정</a>
 			      <c:if test="${level !=1}"><a class="dropdown-item" href="mList.mem">회원리스트</a></c:if>  <!-- 준회원은 회원리스트를 보지 못하도록함. -->
 			      <a class="dropdown-item" href="javascript:memberDelCheck()">회원탈퇴</a>
