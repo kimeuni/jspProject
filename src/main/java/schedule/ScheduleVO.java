@@ -7,39 +7,58 @@ public class ScheduleVO {
 	private String part;
 	private String content;
 	
+	private String partCnt;
+
 	public int getIdx() {
 		return idx;
 	}
+
 	public void setIdx(int idx) {
 		this.idx = idx;
 	}
+
 	public String getMid() {
 		return mid;
 	}
+
 	public void setMid(String mid) {
 		this.mid = mid;
 	}
+
 	public String getsDate() {
 		return sDate;
 	}
+
 	public void setsDate(String sDate) {
 		this.sDate = sDate;
 	}
+
 	public String getPart() {
 		return part;
 	}
+
 	public void setPart(String part) {
 		this.part = part;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getPartCnt() {
+		return partCnt;
+	}
+
+	public void setPartCnt(String partCnt) {
+		this.partCnt = partCnt;
 	}
 	@Override
 	public String toString() {
 		return "ScheduleVO [idx=" + idx + ", mid=" + mid + ", sDate=" + sDate + ", part=" + part + ", content="
-				+ content + "]";
+				+ content + ", partCnt=" + partCnt + "]";
 	}
 }

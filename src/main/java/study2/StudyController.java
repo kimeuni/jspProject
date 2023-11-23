@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import study2.apiTest.SaveCrimeDataCommand;
 import study2.pdstest.FileDownloadCommand;
 import study2.pdstest.FileUpload1OkCommand;
 import study2.pdstest.FileUpload2OkCommand;
@@ -111,6 +112,46 @@ public class StudyController extends HttpServlet {
 			command = new Calendar2Command();  
 			command.execute(request, response);
 			viewPage += "/calendar/calendar2.jsp";
+		}
+		// api (학원 :20231123)
+		else if(com.equals("/api1")) {
+			viewPage += "/apiTest/api1.jsp";
+		}
+		// api (학원 :20231123)
+		else if(com.equals("/apiFetch")) {
+			viewPage += "/apiTest/apiFetch.jsp";
+		}
+		// api (학원 :20231123)
+		else if(com.equals("/apiTest")) {
+			viewPage += "/apiTest/apiTest.jsp";
+		}
+		// api 범죄 DB 저장 (학원 :20231123)
+		else if(com.equals("/saveCrimeData")) {
+			command = new SaveCrimeDataCommand();  
+			command.execute(request, response);
+			return;
+		}
+		// api 범죄 DB 삭제 (학원 :20231123)
+		else if(com.equals("/deleteCrimeData")) {
+			command = new DeleteCrimeDataCommand();  
+			command.execute(request, response);
+			return;
+		}
+		// api 범죄 DB 삭제(전체DB 데이터 중 합계,평균 구해서 뿌리기) (학원 :20231123 /직접 만듦)
+		else if(com.equals("/listCrimeDate")) {
+			command = new ListCrimeDateCommand();  
+			command.execute(request, response);
+			viewPage += "/apiTest/apiTest.jsp";
+		}
+		else if(com.equals("/policeCheck")) {
+			command = new PoliceCheckCommand();  
+			command.execute(request, response);
+			viewPage += "/apiTest/apiTest.jsp";
+		}
+		else if(com.equals("/yearPoliceCheck")) {
+			command = new YearPoliceCheckCommand();  
+			command.execute(request, response);
+			viewPage += "/apiTest/apiTest.jsp";
 		}
 		request.getRequestDispatcher(viewPage).forward(request, response);
 		

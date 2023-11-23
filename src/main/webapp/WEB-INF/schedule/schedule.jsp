@@ -66,14 +66,12 @@
 					<c:set var="todaySw" value="${toYear == yy && toMonth == mm && toDay == st.count ? 1 : 0}"/>
 					<td id="td${cell}" ${todaySw == 1 ? 'class=today' : '' } class="text-left">
 						<c:set var="ymd" value="${yy}-${mm+1}-${st.count}"/>
-						<a href="scheduleMenu.sc?ymd=${ymd}">${st.count}</a><br/> <!-- 클릭하는 해당 날짜에대한 년월일을 가지고 간다. -->
+						<a href="scheduleMenu.sc?ymd=${ymd}">${st.count}<br/></a> <!-- 클릭하는 해당 날짜에대한 년월일을 가지고 간다. -->
 						<!-- 해당날짜에 일정이 있다면 part를 출력한다. -->
 						<c:forEach var="vo" items="${vos}">
 							<c:if test="${fn:substring(vo.sDate,8,10)== st.count}"> <!-- 날짜 -->
-								<%-- ${vo.part} <br/> --%>
 								<!-- 모아서 출력하는 거 해보기... 분류가 같은 날짜에 기타,기타,모임 이렇게 있으면 기타(2),모임 이런식으로 출력되도록 -->
-								<c:if test="${fn:length(vo.part)>1}">${vo.part}(${fn:length(vo.part)})<br/></c:if>
-								<c:if test="${fn:length(vo.part)<1}">${vo.part}<br/></c:if>
+								${vo.part}${vo.partCnt} <br/>
 							</c:if>
 						</c:forEach>
 					</td>

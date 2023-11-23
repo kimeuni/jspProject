@@ -54,7 +54,7 @@
 		function scheduleInputClose(){
 			$("#scheduleInputView").show();
 			$("#scheduleInputClose").hide();
-			$("#scheduleInputForm").hide();
+			$("#scheduleInputForm").slideUp();
 		}
 		
 		// 일정등록하기
@@ -201,7 +201,9 @@
 			<input type="button" value="일정등록" onclick="scheduleInputView()" id="scheduleInputView" class="btn btn-success">
 			<input type="button" value="일정등록닫기" onclick="scheduleInputClose()" id="scheduleInputClose" class="btn btn-info">
 		</div> 
-		<div><input type="button" value="돌아가기" onclick="location.href='schedule.sc'" class="btn btn-primary"></div>
+		<!-- 돌아갈때는  -->
+		<c:set var="ymds" value="${fn:split(ymd,'-')}"/>
+		<div><input type="button" value="돌아가기" onclick="location.href='schedule.sc?yy=${ymds[0]}&mm=${ymds[1]-1}'" class="btn btn-primary"></div>
 	</div>
 	<div id="demo"></div>
 	<hr/>

@@ -25,5 +25,27 @@ insert into schedule values (default,'kms1234','2023-11-22','학습','프로젝�
 
 select * from schedule;
 
-
+/* DATE_FORMAT(날짜 값,'%Y%m%d'): 날짜 값을 '연월일' 형태의 문자열로 변환한다 */
+-- mid 가 admin에 해당하는 것에 sDate가 11월달 모든 데이터를 보고 있다.
 select * from schedule where mid='admin' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part;
+-- mid 가 admin에 해당하는 것에 sDate가 11월 1일인 모든 데이터를 보고 있다.
+select * from schedule where mid='admin' and date_format(sDate,'%Y-%m-%d') = '2023-11-01' order by sDate, part;
+
+-- 날짜별로 묶고 있다. (그룹)  / 같은 날짜는 여러개여도 1개씩만 나오고 있다.
+select distinct sDate from schedule where mid='admin' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part;
+
+-- 집계함수를 사용하면 전체 데이터를 확인가능
+select distinct sDate,count(*) as cnt from schedule where mid='admin' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part;
+
+-- 얘도 distinct와 같이 그룹으로 묶고 있다. (group by)
+select *,count(*) from schedule group by sDate order by sDate, part;
+select * from schedule where date_format(sDate, '%Y-%m')='2023-11' group by sDate order by sDate, part;
+
+select *,count(*) from schedule where date_format(sDate, '%Y-%m')='2023-11' group by part order by sDate, part;
+
+select * from schedule where mid='admin' and date_format(sDate, '%Y-%m')='2023-11' group by sDate order by sDate, part;
+select *,count(*) from schedule where mid='admin' and date_format(sDate, '%Y-%m')='2023-11' group by sDate order by sDate, part;
+
+-- 이런식으로 실무에서 많이 사용.. 
+select *,count(*) as partCnt from schedule where mid='admin' and date_format(sDate, '%Y-%m')='2023-11' group by sDate,part order by sDate, part;
+
